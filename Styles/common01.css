@@ -1,0 +1,13 @@
+.row{
+    width: inherit;
+    display: flex;
+  } 
+
+.col1{
+    width: 800px;
+    margin-right: 10px;
+}
+
+.col2{
+    width: 500px;
+}
