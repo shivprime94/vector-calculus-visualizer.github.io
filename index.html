@@ -465,6 +465,8 @@
                 gradient.style.display="inherit";
                 divergence.style.display="none";
                 curl.style.display="none";
+                clearAllDivergence();
+                clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
             else if(document.getElementById("choice-divergence").checked==true){
@@ -472,6 +474,9 @@
                 gradient.style.display="none";
                 divergence.style.display="inherit";
                 curl.style.display="none";
+                clearGradientField();
+                clearGradientArrow();
+                clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
             else if(document.getElementById("choice-curl").checked==true){
@@ -479,6 +484,9 @@
                 gradient.style.display="none";
                 divergence.style.display="none";
                 curl.style.display="inherit";
+                clearGradientField();
+                clearGradientArrow();
+                clearAllDivergence();
                 //curl_quick_access.style.display="inherit";
             }
             
@@ -838,7 +846,9 @@
                     x = x0;
                     y = y0 + j*del;
                     z = z0 - i*del;
-                    divergence += eval(vectorField.i);
+                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.i);
                     // console.log(divergence);
                 }
             }
@@ -853,7 +863,9 @@
                     x = x0;
                     y = y0 + j*del;
                     z = z0 - i*del;
-                    divergence -= eval(vectorField.i);
+                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    divergence -= outVal;
+                    //divergence -= eval(vectorField.i);
                     // console.log(divergence);
                 }
             }
@@ -869,7 +881,9 @@
                     x = x0 - j*del;
                     y = y0;
                     z = z0 - i*del;
-                    divergence += eval(vectorField.j);
+                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.j);
                     // console.log(divergence);
                 }
             }
@@ -885,7 +899,9 @@
                     x = x0 - j*del;
                     y = y0;
                     z = z0 - i*del;
-                    divergence -= eval(vectorField.j);
+                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    divergence -= outVal;
+                    //divergence -= eval(vectorField.j);
                     // console.log(divergence);
                 }
             }
@@ -902,7 +918,9 @@
                     x = x0 - j*del;
                     y = y0 + i*del;
                     z = z0;
-                    divergence += eval(vectorField.k);
+                    let outVal = evaluationOfInput(vectorField.k,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.k);
                     // console.log(divergence);
                 }
             }
@@ -918,19 +936,21 @@
                     x = x0 - j*del;
                     y = y0 + i*del;
                     z = z0;
-                    divergence -= eval(vectorField.k);
+                    let outVal = evaluationOfInput(vectorField.k,x,y,z); 
+                    divergence -= outVal;
+                    // divergence -= eval(vectorField.k);
                     // console.log(divergence);
                 }
             }
             divergence *= (del * del);
 
 
-            document.getElementById("outward-flow-value").value = divergence.toFixed(2);
+            document.getElementById("outward-flow-value").value = divergence.toFixed(4);
             var volume = deltaSize**3;
             divergence = divergence/(volume);
-            document.getElementById("total_cube_volume").value = volume.toFixed(2);
-            document.getElementById("divergence-value1").value = divergence.toFixed(2);
-            document.getElementById("divergence-value2").value = divergence.toFixed(2);
+            document.getElementById("total_cube_volume").value = volume.toFixed(4);
+            document.getElementById("divergence-value1").value = divergence.toFixed(4);
+            document.getElementById("divergence-value2").value = divergence.toFixed(4);
 
 
             //var canvas = document.getElementById("MyCanvas");
@@ -939,11 +959,46 @@
             //ctx.fillText("Hello World",5,30);
             //ctx.fillText("Hello World",250,250);.
             
-            document.getElementById("show-outward-flow-on-canvas").innerText=divergence.toFixed(2);
-            document.getElementById("show-divergence-on-canvas").innerText=divergence.toFixed(2);
-            
+            document.getElementById("show-outward-flow-on-canvas").innerText=divergence.toFixed(4);
+            document.getElementById("show-divergence-on-canvas").innerText=divergence.toFixed(4);
+             
+        }
 
+        function evaluationOfInput(strInput,x,y,z)
+        {
+            let finalValue = 1;
+            let valLen = 0;
+            let floatValue = parseFloat(strInput);
+            if (!floatValue)
+                {
+                    floatValue = 1;
+                    valLen = 0;
+                    
+                }
+            else
+            {
+                valLen = floatValue.toString().length;
+            }
             
+            for (let k = valLen; k < strInput.length; k++) {
+                if (strInput[k] == "x")
+                {
+                    finalValue = x * finalValue;
+                }
+                else if (strInput[k] == "y")
+                {
+                    finalValue = y * finalValue;
+                }
+                else if (strInput[k] == "z")
+                {
+                    finalValue = z * finalValue;
+                }
+            }
+           
+            finalValue = finalValue*floatValue;
+            
+            return finalValue;
+
         }
 
         //================================= Curl ========================================//
@@ -1091,12 +1146,14 @@
             x=(cplanex/vR_factor)+del;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var final = eval(f);
+            var final = evaluationOfInput(f,x,y,z);
+            //var final = eval(f);
             
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial = evaluationOfInput(f,x,y,z);   
+            //var initial = eval(f);
             
 
             return((final-initial)/del);
@@ -1108,12 +1165,13 @@
             x=cplanex/vR_factor;
             y=(cplaney/vR_factor)+del;
             z=cplanez/vR_factor;
-
-            var final = eval(f);
+            var final = evaluationOfInput(f,x,y,z);
+            // var final = eval(f);
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial =evaluationOfInput(f,x,y,z);
+            // var initial = eval(f);
 
             return((final-initial)/del);
 
@@ -1124,12 +1182,13 @@
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=(cplanez/vR_factor)+del;
-
-            var final = eval(f);
+            var final =evaluationOfInput(f,x,y,z);
+            // var final = eval(f);
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial =evaluationOfInput(f,x,y,z);
+            // var initial = eval(f);
 
             return((final-initial)/del);
 
@@ -1445,7 +1504,7 @@
                     </table>    
                 </div>
             <div class="col2">
-                <input type="radio" class="selector" id="choice-gradient" name="function_type" onclick="selectFunctionChoice()" checked ><u><b> Gradient</b></u><br><br>
+                <input type="radio" class="selector" id="choice-gradient" name="function_type" onclick="selectFunctionChoice()" checked ><b> Gradient</b><br><br>
                 <input type="radio" class="selector" id="choice-divergence" name="function_type" onclick="selectFunctionChoice();setVectorField()"><b>Divergence</b><br><br> 
                 <input type="radio" class="selector" id="choice-curl" name="function_type" onclick="selectFunctionChoice();setVectorField2()"> <b>Curl</b><br><br>
 
@@ -1459,7 +1518,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Enter Scalar Field</b> (<i>platform is compatible only for linear functions</i>)
+                                            <div><b>Enter Scalar Field</b> </div>(<i>platform is compatible only for linear functions</i>)
                                             <div>
                                                 V = 
                                                 <input id="grad-x-comp" class="cons-input" type="number" step=0.1>x +
@@ -1484,7 +1543,7 @@
                                     <br>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Specify a vector to view the gradient along it</b>
+                                            <b>Specify a vector to view the rate of change along it</b>
                         
                                         
                                             <div>
@@ -1557,9 +1616,9 @@
                                                 <input type="submit" onclick="clearAllDivergence()"  value="Clear">
                                             </div>
                                             <div>
-                                                <i>Outward Flow = </i><input id="outward-flow-value" type="text" readonly style="width:80px;">
+                                                <i>Outward Flux = </i><input id="outward-flow-value" type="text" readonly style="width:80px;">
                                                 <i>&Delta;v = </i><input id="total_cube_volume" type="text" readonly style="width:80px;"><br>
-                                                <i>(Outward Flow)/&Delta;v = </i><input id="divergence-value1" type="text" readonly style="width:80px;">
+                                                <i>(Outward Flow)/</i>&Delta;<i>v = </i><input id="divergence-value1" type="text" readonly style="width:80px;">
                                                 <i>Divergence  = </i><input id="divergence-value2" type="text" readonly style="width:80px;">
                                             </div>
                                             <div id="show-outward-flow-on-canvas" style="color:white;position:absolute;top:80px;left:25px;font-size:larger"></div>
