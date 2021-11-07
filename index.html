@@ -1093,12 +1093,14 @@
 
 
         function rotateAboutX(func_id){
+            if(curlPlane === undefined)
+            {
+                return;
+            }
             var rotationAngle = document.getElementById(func_id).value
-            
             var radianOutput = rotationAngle * (Math.PI / 180);
 
             curlPlane.rotation.z = radianOutput;
-            
             var theta = curlPlane.rotation.z;
             if(originalCurlPlane=="y"){
                 curlPlaneDir.y=Math.cos(theta);
@@ -1112,10 +1114,12 @@
         }
     
         function rotateAboutY(func_id){
+            if(curlPlane === undefined)
+            {
+                return;
+            }
             var rotationAngle = document.getElementById(func_id).value
-            
             var radianOutput = rotationAngle * (Math.PI / 180);
-
 
             curlPlane.rotation.x = radianOutput;
             var theta = curlPlane.rotation.x;
@@ -1132,8 +1136,11 @@
         }
 
         function rotateAboutZ(func_id){
+            if(curlPlane === undefined)
+            {
+                return;
+            }
             var rotationAngle = document.getElementById(func_id).value
-            
             var radianOutput = rotationAngle * (Math.PI / 180);
 
                 curlPlane.rotation.y = rotationAngle;
