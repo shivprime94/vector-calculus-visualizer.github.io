@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -39,6 +40,55 @@
                 width:500px;
                 height:250px; 
             }
+
+
+            /* Curl Slider */
+
+
+            .slidecontainer {
+                width: 100%; /* Width of the outside container */
+            }
+
+            /* The slider itself */
+            .slider {
+            margin-left: 10px;
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: 75%; /* Full-width */
+            height: 15px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+            }
+
+            /* Mouse-over effects */
+            .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+            }
+
+            /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+            .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
+
+            .slider::-moz-range-thumb {
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
+
+            
+
+
+
     </style>
 
     <!-- ======================= Shader =======================-->
@@ -363,7 +413,6 @@
             var cartesian_Range = document.querySelector(".cartesian_range_setter");
             var cylindrical_Range = document.querySelector(".cylindrical_range_setter");
             var spherical_Range = document.querySelector(".spherical_range_setter");
-
             if(document.getElementById("cartesian-range-radio").checked==true){
                 cartesian_Range.style.display="inherit";
                 cylindrical_Range.style.display="none";
@@ -380,7 +429,6 @@
                 spherical_Range.style.display="inherit";
             }
         }
-
         function setCartesianRange(){
             var xFrom = document.getElementById("cartesian-xFrom").value;
             var xTo = document.getElementById("cartesian-xTo").value;
@@ -388,28 +436,23 @@
             var yTo = document.getElementById("cartesian-yTo").value;
             var zFrom = document.getElementById("cartesian-zFrom").value;
             var zTo = document.getElementById("cartesian-zTo").value;
-
             // 500 200 500
-
             if(xFrom=="") xFrom=0;
             if(xTo=="") xTo=0;
             if(yFrom=="") yFrom=0;
             if(yTo=="") yTo=0;
             if(zFrom=="") zFrom=0;
             if(zTo=="") zTo=0;
-
             xFrom = parseFloat(xFrom);
             xTo = parseFloat(xTo);
             yFrom = parseFloat(yFrom);
             yTo = parseFloat(yTo);
             zFrom = parseFloat(zFrom);
             zTo = parseFloat(zTo);
-
             var vec = new THREE.Vector3(vR_factor*(xFrom+xTo)/2,vR_factor*(yFrom+yTo)/2,vR_factor*(zFrom+zTo)/2);
             camera.position.set(vec.x+200,vec.y+100,vec.z+200);
             camera.rotation.set(0, 0, 0);
             camera.lookAt(vec);
-
             
         }
         function setCylindricalRange(){
@@ -417,32 +460,24 @@
             var rhoTo = document.getElementById("cylindrical-rhoTo").value;
             var zFrom = document.getElementById("cylindrical-zFrom").value;
             var zTo = document.getElementById("cylindrical-zTo");
-
             if(rhoFrom=="") rhoFrom = 0;
             if(rhoTo=="") rhoTo = 0;
             if(zFrom=="") zFrom = 0;
             if(zTo=="") zTo =0;
-
-
             rhoFrom = parseFloat(rhoFrom);
             rhoTo = parseFloat(rhoTo);
             zFrom = parseFloat(zFrom);
             zTo   = parseFloat(zTo);
-
             var vec = new THREE.Vector3(vR_factor*(rhoFrom+rhoTo)/2,vR_factor*(rhoFrom+rhoTo)/2,vR_factor*(zFrom+zTo)/2);
             camera.position.set(vec.x+200,vec.y+100,vec.z+200);
             camera.rotation.set(0, 0, 0);
             camera.lookAt(vec);
-
         }
-
         function setSphericalRange(){
             var rFrom = document.getElementById("spherical-rFrom").value;
             var rTo = document.getElementById("spherical-rTo").value;
-
             if(rFrom=="") rFrom =0;
             if(rTo=="") rTh =0;
-
             rFrom = parseFloat(rFrom);
             rTo = parseFloat(rTo);
             var vec = new THREE.Vector3(vR_factor*rTo,vR_factor*rTo,vR_factor*rTo);
@@ -576,7 +611,6 @@
             /*if(cvPlane0!=null){
                 scene.remove(cvPlane0);
             }
-
             var distance0=new THREE.Vector3(0,0,0);
             var planeGeometry0=new THREE.PlaneGeometry(100,100);
             var planeMaterial0 = new THREE.MeshPhongMaterial({color: 0xbb9199, side: THREE.DoubleSide,opacity: 0.9,transparent: true});
@@ -584,7 +618,6 @@
             cvPlane0.position.set(dir.x*distance0.x,dir.y*distance0.y,dir.z*distance0.z);
             cvPlane0.lookAt(0,0,0);
             scene.add(cvPlane0);
-
             */
             if(cvPlane1!=null){
                 scene.remove(cvPlane1);
@@ -1059,41 +1092,51 @@
         }
 
 
-        function rotateAboutX(){
-            interval = setInterval(function () {
-                curlPlane.rotation.z+=0.005;
-                var theta = curlPlane.rotation.z;
-                if(originalCurlPlane=="y"){
-                    curlPlaneDir.y=Math.cos(theta);
-                    curlPlaneDir.z=Math.sin(theta);
-                }
-                else{
-                    curlPlaneDir.y=-Math.sin(theta);
-                    curlPlaneDir.z=Math.cos(theta);
-                }
-                
-            }, 2);
+        function rotateAboutX(func_id){
+            var rotationAngle = document.getElementById(func_id).value
+            
+            var radianOutput = rotationAngle * (Math.PI / 180);
+
+            curlPlane.rotation.z = radianOutput;
+            
+            var theta = curlPlane.rotation.z;
+            if(originalCurlPlane=="y"){
+                curlPlaneDir.y=Math.cos(theta);
+                curlPlaneDir.z=Math.sin(theta);
+            }
+            else{
+                curlPlaneDir.y=-Math.sin(theta);
+                curlPlaneDir.z=Math.cos(theta);
+            }
 
         }
     
-        function rotateAboutY(){
-            interval = setInterval(function () {
-                curlPlane.rotation.x+=0.005;
-                var theta = curlPlane.rotation.x;
-                if(originalCurlPlane=="x"){
-                    curlPlaneDir.x=Math.cos(theta);
-                    curlPlaneDir.z=-Math.sin(theta);
-                }
-                else{
-                    curlPlaneDir.x=Math.sin(theta);
-                    curlPlaneDir.z=Math.cos(theta);
-                }
-            }, 2);
+        function rotateAboutY(func_id){
+            var rotationAngle = document.getElementById(func_id).value
+            
+            var radianOutput = rotationAngle * (Math.PI / 180);
+
+
+            curlPlane.rotation.x = radianOutput;
+            var theta = curlPlane.rotation.x;
+            if(originalCurlPlane=="x"){
+                curlPlaneDir.x=Math.cos(theta);
+                curlPlaneDir.z=-Math.sin(theta);
+            }
+            else{
+                curlPlaneDir.x=Math.sin(theta);
+                curlPlaneDir.z=Math.cos(theta);
+            }
+
+
         }
 
-        function rotateAboutZ(){
-            interval = setInterval(function () {
-                curlPlane.rotation.y+=0.005;
+        function rotateAboutZ(func_id){
+            var rotationAngle = document.getElementById(func_id).value
+            
+            var radianOutput = rotationAngle * (Math.PI / 180);
+
+                curlPlane.rotation.y = rotationAngle;
                 var theta = curlPlane.rotation.y;
                 if(originalCurlPlane=="x"){
                     curlPlaneDir.x=Math.cos(theta);
@@ -1103,18 +1146,12 @@
                     curlPlaneDir.x=-Math.sin(theta);
                     curlPlaneDir.y=Math.cos(theta);
                 }
-            }, 2);
         }
         
 
 
         function stopRotating(){
-            clearInterval(interval);
-
-            
-
             calculateCurl();
-
         }       
 
 
@@ -1133,9 +1170,11 @@
             curlPlaneDir.normalize();
             var circulation = curlPlaneDir.x * totalCurl.i + curlPlaneDir.y*totalCurl.j + curlPlaneDir.z*totalCurl.k;
 
-            document.getElementById("show-curl").value=circulation.toFixed(2);
+            document.getElementById("show-curl").value=circulation.toFixed(4);
+            document.getElementById("show-circulation-by-delta-s").value=circulation.toFixed(4);
+            console.log(planelength/vR_factor);
             circulation = circulation*(planelength/vR_factor)*(planelength/vR_factor)
-            document.getElementById("show-circulation").value=circulation.toFixed(2);
+            document.getElementById("show-circulation").value=circulation.toFixed(4);
             
 
         }    
@@ -1264,7 +1303,6 @@
                 document.getElementsByName("xy-rotation-button")[0].style.display="";
                 document.getElementsByName("yz-rotation-button")[0].style.display="none";
                 document.getElementsByName("zx-rotation-button")[0].style.display="none";
-
                 document.getElementsByName("xy-rotation-button")[1].style.display="";
                 document.getElementsByName("yz-rotation-button")[1].style.display="none";
                 document.getElementsByName("zx-rotation-button")[1].style.display="none";
@@ -1325,7 +1363,6 @@
                 document.getElementsByName("xy-rotation-button")[0].style.display="none";
                 document.getElementsByName("yz-rotation-button")[0].style.display="";
                 document.getElementsByName("zx-rotation-button")[0].style.display="none";
-
                 document.getElementsByName("xy-rotation-button")[1].style.display="none";
                 document.getElementsByName("yz-rotation-button")[1].style.display="";
                 document.getElementsByName("zx-rotation-button")[1].style.display="none";
@@ -1386,7 +1423,6 @@
                 document.getElementsByName("xy-rotation-button")[0].style.display="none";
                 document.getElementsByName("yz-rotation-button")[0].style.display="none";
                 document.getElementsByName("zx-rotation-button")[0].style.display="";
-
                 document.getElementsByName("xy-rotation-button")[1].style.display="none";
                 document.getElementsByName("yz-rotation-button")[1].style.display="none";
                 document.getElementsByName("zx-rotation-button")[1].style.display="";
@@ -1656,46 +1692,68 @@
                                     <tr class="second-row">
                                         <td class="cSub_td cParameter" style="width:1000px;">
                                             <b>Specify a point</b>
-                                            <div>
-                                                Enter the point
-                                            </div>
+
                                             <div>
                                             x = <input id="curl-inp-x" class="cons-input" type="number" step=0.1>,
                                             y= <input id="curl-inp-y" class="cons-input" type="number" step=0.1>,
                                             z=<input id="curl-inp-z" class="cons-input" type="number" step=0.1>
                                             </div>
+
                                             <div>
                                                 &Delta;l = <input id="len-size" class="cons-input" type="number" step=0.1>
                                             </div>
+
                                             <div>
                                                 <b>Plane parallel to :</b>
                                                 <input type="radio" id="plane_xy" name="initial_plane" onclick="planePlaneSet()" checked> xy plane
                                                 <input type="radio" id="plane_yz" name="initial_plane" onclick="planePlaneSet()" > yz plane
                                                 <input type="radio" id="plane_zx" name="initial_plane" onclick="planePlaneSet()" > zx plane
                                             </div>
+
                                             <div>
-                                                <input type="submit" onclick="showCurlPlane();calculateCurl()"  value="Calculate and Show">
+                                                <input type="submit" onclick="showCurlPlane()"  value="Show">
                                                 <input type="submit" onclick="clearCurlPlane()"  value="Clear">
                                             
                                             </div>
-                                            <div name="xy-rotation-button">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis">
-                                                <input type="button" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis">
+
+                                            <div class="slidecontainer" name="xy-rotation-button">
+                                                Rotate Plane about: <br>
+                                                x-axis <input id = "curl_rotationaboutxy_x" type="range" min="0" max="360" class="slider" onclick="rotateAboutX( 'curl_rotationaboutxy_x')" value="x axis"> <br>
+                                                y-axis <input id = "curl_rotationaboutxy_y" type="range" min="0" max="360" class="slider" onclick="rotateAboutY('curl_rotationaboutxy_y')" value="y axis">
+                                                
+                                                
+                                                <span style="margin-left: 13%; margin-right: 67%; ">0</span>
+                                                <span>2&Pi;</span>
+                                                    
+                                            </div>
+                                            <div class="slidecontainer" name="yz-rotation-button" style="display: none;">
+                                                Rotate Plane about: <br>
+                                                y-axis <input  id = "curl_rotationaboutyz_y" type="range" min="0" max="360" class="slider" onclick="rotateAboutY('curl_rotationaboutyz_y')" value="y axis"> <br>
+                                                z-axis <input  id = "curl_rotationaboutyz_z" type="range" min="0" max="360" class="slider" onclick="rotateAboutZ('curl_rotationaboutyz_z')" value="z axis">
+                                                
+                                                <span style="margin-left: 13%; margin-right: 67%; ">0</span>
+                                                <span>2&Pi;</span>
                                                 
                                             </div>
-                                            <div name="yz-rotation-button" style="display: none;">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis">
-                                                <input type="button" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis">
-                                                
+
+
+                                            <div class="slidecontainer" name="zx-rotation-button" style="display: none;">
+                                                Rotate Plane about: <br>
+                                                z-axis <input id = "curl_rotationaboutxz_z" type="range" min="0" max="360" class="slider" onclick="rotateAboutZ('curl_rotationaboutxz_z')" value="z axis"> <br>
+                                                x-axis <input id = "curl_rotationaboutxz_x" type="range" min="0" max="360" class="slider" onclick="rotateAboutX('curl_rotationaboutxz_x')" value="x axis">
+                                               
+                                                <span style="margin-left: 13%; margin-right: 67%; ">0</span>
+                                                <span>2&Pi;</span>
                                             </div>
-                                            <div name="zx-rotation-button" style="display: none;">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis">
-                                                <input type="button" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis">
-                                                
-                                            </div>
+
+
+                                            <input type="submit" onclick="calculateCurl(); stopRotating()"  value="Calculate">
+
+
                                             <div>
-                                                <i>Circulation along plane =</i><input id ="show-circulation"readonly style="margin-bottom: 7px;"><br>
-                                                <i>Curl (Circulation/Area) = </i><input id="show-curl" readonly>
+                                                <i>Circulation around plane =</i><input id ="show-circulation"readonly style="margin-bottom: 7px;"><br>
+                                                <i>Circulation around plane / </i> &Delta; <i>s =</i><input id ="show-circulation-by-delta-s"readonly style="margin-bottom: 7px;"><br>
+                                                <i>Curl = </i><input id="show-curl" readonly>
                                             </div>
                                         </td>
                                     </tr>
