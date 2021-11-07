@@ -39,6 +39,55 @@
                 width:500px;
                 height:250px; 
             }
+
+
+            /* Curl Slider */
+
+
+            .slidecontainer {
+                width: 100%; /* Width of the outside container */
+            }
+
+            /* The slider itself */
+            .slider {
+            margin-left: 10px;
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: 75%; /* Full-width */
+            height: 15px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+            }
+
+            /* Mouse-over effects */
+            .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+            }
+
+            /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+            .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
+
+            .slider::-moz-range-thumb {
+            width: 15px; /* Set a specific slider handle width */
+            height: 15px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
+
+            
+
+
+
     </style>
 
     <!-- ======================= Shader =======================-->
@@ -465,6 +514,8 @@
                 gradient.style.display="inherit";
                 divergence.style.display="none";
                 curl.style.display="none";
+                clearAllDivergence();
+                clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
             else if(document.getElementById("choice-divergence").checked==true){
@@ -472,6 +523,9 @@
                 gradient.style.display="none";
                 divergence.style.display="inherit";
                 curl.style.display="none";
+                clearGradientField();
+                clearGradientArrow();
+                clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
             else if(document.getElementById("choice-curl").checked==true){
@@ -479,6 +533,9 @@
                 gradient.style.display="none";
                 divergence.style.display="none";
                 curl.style.display="inherit";
+                clearGradientField();
+                clearGradientArrow();
+                clearAllDivergence();
                 //curl_quick_access.style.display="inherit";
             }
             
@@ -582,7 +639,7 @@
                 scene.remove(cvPlane1);
             }
 
-            var distance1=new THREE.Vector3(50,50,50);
+            var distance1=new THREE.Vector3(-50,-50,-50);
             var planeGeometry1=new THREE.PlaneGeometry(100,100);
             var planeMaterial1 = new THREE.MeshPhongMaterial({color: 0xbb9111, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
             cvPlane1 = new THREE.Mesh( planeGeometry1, planeMaterial1 );
@@ -615,7 +672,7 @@
                 scene.remove(cvPlane2);
             }
 
-            var distance2=new THREE.Vector3(100,100,100);
+            var distance2=new THREE.Vector3(0.00001,0.00001,0.00001);
             var planeGeometry2=new THREE.PlaneGeometry(100,100);
             var planeMaterial2 = new THREE.MeshPhongMaterial({color: 0xbb9177, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
             cvPlane2 = new THREE.Mesh( planeGeometry2, planeMaterial2 );
@@ -647,7 +704,7 @@
                 scene.remove(cvPlane3);
             }
 
-            var distance3=new THREE.Vector3(150,150,150);
+            var distance3=new THREE.Vector3(50,50,50);
             var planeGeometry3=new THREE.PlaneGeometry(100,100);
             var planeMaterial3 = new THREE.MeshPhongMaterial({color: 0xbb91ff, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
             cvPlane3 = new THREE.Mesh( planeGeometry3, planeMaterial3 );
@@ -690,12 +747,20 @@
 
             var dir = new THREE.Vector3(vecy/mag,vecz/mag,vecx/mag);
             var origin = new THREE.Vector3( 0, 0, 0 );
-            var length = 150;
+            var length = 50;
             var hex = 0xffffff;
             if(gradientArrow!=null){
                 scene.remove(gradientArrow);
             }
-            gradientArrow = new THREE.ArrowHelper(dir , origin, length, hex ,10 ,5 );
+            if(mag == 0)
+            {
+                gradientArrow = new THREE.ArrowHelper(dir , origin, 0, hex ,0 ,0 );
+            }
+            else
+            {
+                gradientArrow = new THREE.ArrowHelper(dir , origin, length, hex ,10 ,5 );
+            }
+            
             scene.add(gradientArrow);
 
         }
@@ -830,7 +895,9 @@
                     x = x0;
                     y = y0 + j*del;
                     z = z0 - i*del;
-                    divergence += eval(vectorField.i);
+                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.i);
                     // console.log(divergence);
                 }
             }
@@ -845,7 +912,9 @@
                     x = x0;
                     y = y0 + j*del;
                     z = z0 - i*del;
-                    divergence -= eval(vectorField.i);
+                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    divergence -= outVal;
+                    //divergence -= eval(vectorField.i);
                     // console.log(divergence);
                 }
             }
@@ -861,7 +930,9 @@
                     x = x0 - j*del;
                     y = y0;
                     z = z0 - i*del;
-                    divergence += eval(vectorField.j);
+                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.j);
                     // console.log(divergence);
                 }
             }
@@ -877,7 +948,9 @@
                     x = x0 - j*del;
                     y = y0;
                     z = z0 - i*del;
-                    divergence -= eval(vectorField.j);
+                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    divergence -= outVal;
+                    //divergence -= eval(vectorField.j);
                     // console.log(divergence);
                 }
             }
@@ -894,7 +967,9 @@
                     x = x0 - j*del;
                     y = y0 + i*del;
                     z = z0;
-                    divergence += eval(vectorField.k);
+                    let outVal = evaluationOfInput(vectorField.k,x,y,z);
+                    divergence += outVal;
+                    //divergence += eval(vectorField.k);
                     // console.log(divergence);
                 }
             }
@@ -910,19 +985,21 @@
                     x = x0 - j*del;
                     y = y0 + i*del;
                     z = z0;
-                    divergence -= eval(vectorField.k);
+                    let outVal = evaluationOfInput(vectorField.k,x,y,z); 
+                    divergence -= outVal;
+                    // divergence -= eval(vectorField.k);
                     // console.log(divergence);
                 }
             }
             divergence *= (del * del);
 
 
-            document.getElementById("outward-flow-value").value = divergence.toFixed(2);
+            document.getElementById("outward-flow-value").value = divergence.toFixed(4);
             var volume = deltaSize**3;
             divergence = divergence/(volume);
-            document.getElementById("total_cube_volume").value = volume.toFixed(2);
-            document.getElementById("divergence-value1").value = divergence.toFixed(2);
-            document.getElementById("divergence-value2").value = divergence.toFixed(2);
+            document.getElementById("total_cube_volume").value = volume.toFixed(4);
+            document.getElementById("divergence-value1").value = divergence.toFixed(4);
+            document.getElementById("divergence-value2").value = divergence.toFixed(4);
 
 
             //var canvas = document.getElementById("MyCanvas");
@@ -931,11 +1008,46 @@
             //ctx.fillText("Hello World",5,30);
             //ctx.fillText("Hello World",250,250);.
             
-            document.getElementById("show-outward-flow-on-canvas").innerText=divergence.toFixed(2);
-            document.getElementById("show-divergence-on-canvas").innerText=divergence.toFixed(2);
-            
+            document.getElementById("show-outward-flow-on-canvas").innerText=divergence.toFixed(4);
+            document.getElementById("show-divergence-on-canvas").innerText=divergence.toFixed(4);
+             
+        }
 
+        function evaluationOfInput(strInput,x,y,z)
+        {
+            let finalValue = 1;
+            let valLen = 0;
+            let floatValue = parseFloat(strInput);
+            if (!floatValue)
+                {
+                    floatValue = 1;
+                    valLen = 0;
+                    
+                }
+            else
+            {
+                valLen = floatValue.toString().length;
+            }
             
+            for (let k = valLen; k < strInput.length; k++) {
+                if (strInput[k] == "x")
+                {
+                    finalValue = x * finalValue;
+                }
+                else if (strInput[k] == "y")
+                {
+                    finalValue = y * finalValue;
+                }
+                else if (strInput[k] == "z")
+                {
+                    finalValue = z * finalValue;
+                }
+            }
+           
+            finalValue = finalValue*floatValue;
+            
+            return finalValue;
+
         }
 
         //================================= Curl ========================================//
@@ -1083,12 +1195,14 @@
             x=(cplanex/vR_factor)+del;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var final = eval(f);
+            var final = evaluationOfInput(f,x,y,z);
+            //var final = eval(f);
             
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial = evaluationOfInput(f,x,y,z);   
+            //var initial = eval(f);
             
 
             return((final-initial)/del);
@@ -1100,12 +1214,13 @@
             x=cplanex/vR_factor;
             y=(cplaney/vR_factor)+del;
             z=cplanez/vR_factor;
-
-            var final = eval(f);
+            var final = evaluationOfInput(f,x,y,z);
+            // var final = eval(f);
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial =evaluationOfInput(f,x,y,z);
+            // var initial = eval(f);
 
             return((final-initial)/del);
 
@@ -1116,12 +1231,13 @@
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=(cplanez/vR_factor)+del;
-
-            var final = eval(f);
+            var final =evaluationOfInput(f,x,y,z);
+            // var final = eval(f);
             x=cplanex/vR_factor;
             y=cplaney/vR_factor;
             z=cplanez/vR_factor;
-            var initial = eval(f);
+            var initial =evaluationOfInput(f,x,y,z);
+            // var initial = eval(f);
 
             return((final-initial)/del);
 
@@ -1437,7 +1553,7 @@
                     </table>    
                 </div>
             <div class="col2">
-                <input type="radio" class="selector" id="choice-gradient" name="function_type" onclick="selectFunctionChoice()" checked ><u><b> Gradient</b></u><br><br>
+                <input type="radio" class="selector" id="choice-gradient" name="function_type" onclick="selectFunctionChoice()" checked ><b> Gradient</b><br><br>
                 <input type="radio" class="selector" id="choice-divergence" name="function_type" onclick="selectFunctionChoice();setVectorField()"><b>Divergence</b><br><br> 
                 <input type="radio" class="selector" id="choice-curl" name="function_type" onclick="selectFunctionChoice();setVectorField2()"> <b>Curl</b><br><br>
 
@@ -1451,7 +1567,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Enter Scalar Field</b> (<i>platform is compatible only for linear functions</i>)
+                                            <div><b>Enter Scalar Field</b> </div>(<i>platform is compatible only for linear functions</i>)
                                             <div>
                                                 V = 
                                                 <input id="grad-x-comp" class="cons-input" type="number" step=0.1>x +
@@ -1476,7 +1592,7 @@
                                     <br>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Specify a vector to view the gradient along it</b>
+                                            <b>Specify a vector to view the rate of change along it</b>
                         
                                         
                                             <div>
@@ -1549,9 +1665,9 @@
                                                 <input type="submit" onclick="clearAllDivergence()"  value="Clear">
                                             </div>
                                             <div>
-                                                <i>Outward Flow = </i><input id="outward-flow-value" type="text" readonly style="width:80px;">
+                                                <i>Outward Flux = </i><input id="outward-flow-value" type="text" readonly style="width:80px;">
                                                 <i>&Delta;v = </i><input id="total_cube_volume" type="text" readonly style="width:80px;"><br>
-                                                <i>(Outward Flow)/&Delta;v = </i><input id="divergence-value1" type="text" readonly style="width:80px;">
+                                                <i>(Outward Flow)/</i>&Delta;<i>v = </i><input id="divergence-value1" type="text" readonly style="width:80px;">
                                                 <i>Divergence  = </i><input id="divergence-value2" type="text" readonly style="width:80px;">
                                             </div>
                                             <div id="show-outward-flow-on-canvas" style="color:white;position:absolute;top:80px;left:25px;font-size:larger"></div>
@@ -1607,25 +1723,39 @@
                                                 <input type="radio" id="plane_zx" name="initial_plane" onclick="planePlaneSet()" > zx plane
                                             </div>
                                             <div>
-                                                <input type="submit" onclick="showCurlPlane();calculateCurl()"  value="Calculate and Show">
+                                                <input type="submit" onclick="showCurlPlane();calculateCurl()"  value="Show">
                                                 <input type="submit" onclick="clearCurlPlane()"  value="Clear">
                                             
                                             </div>
-                                            <div name="xy-rotation-button">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis">
-                                                <input type="button" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis">
+                                            <div class="slidecontainer" name="xy-rotation-button">
+                                                Rotate Plane about: <br>
+                                                x-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis"> <br>
+                                                y-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis">
+                                                
+                                                    <span style="margin-left: 13%; margin-right: 67%; ">0</span>
+                                                    <span>2&Pi;</span>
+                                                    
+                                               
                                                 
                                             </div>
-                                            <div name="yz-rotation-button" style="display: none;">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis">
-                                                <input type="button" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis">
+                                            <div class="slidecontainer" name="yz-rotation-button" style="display: none;">
+                                                Rotate Plane about:
+                                                y-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutY()" onmouseup="stopRotating()" value="y axis"> <br>
+                                                z-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis">
+                                                <span>
+                                                    <div style="margin-right: 75%;">Mayank</div>
+                                                </span>
                                                 
                                             </div>
-                                            <div name="zx-rotation-button" style="display: none;">
-                                                Rotate Plane about <input type="button" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis">
-                                                <input type="button" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis">
-                                                
+                                            <div class="slidecontainer" name="zx-rotation-button" style="display: none;">
+                                                Rotate Plane about: 
+                                                z-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutZ()" onmouseup="stopRotating()" value="z axis"> <br>
+                                                x-axis <input type="range" min="0" max="360" class="slider" onmousedown="rotateAboutX()" onmouseup="stopRotating()" value="x axis">
+                                                <span>
+                                                    <div style="margin-right: 75%;">Mayank</div>
+                                                </span>
                                             </div>
+                                            <input type="submit" onclick="showCurlPlane();calculateCurl()"  value="Calculate">
                                             <div>
                                                 <i>Circulation along plane =</i><input id ="show-circulation"readonly style="margin-bottom: 7px;"><br>
                                                 <i>Curl (Circulation/Area) = </i><input id="show-curl" readonly>
