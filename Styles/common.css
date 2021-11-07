@@ -1,121 +1,122 @@
+body {
+  background-color: #f8d84a;
+}
 .cMain_table {
-    border: 2px solid green;
-    width: 1024px;
-    margin-left: auto;
-    margin-right: auto;
+  border: 2px solid green;
+  width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .cMain_td {
-    border: 2px solid green;
+  border: 2px solid green;
 }
 .cBoxGraph {
-    width: 600px;
-    height: 300px;
-    margin-bottom: 5px;
+  width: 600px;
+  height: 300px;
+  margin-bottom: 5px;
 }
 .cBoxGraphCircle {
-    height: 400px;
+  height: 400px;
 }
 .cBoxPara {
-    vertical-align: auto;
-    width: auto;
-    height: auto;
-    border: 1px solid RoyalBlue;
-    margin-bottom: 5px;
+  vertical-align: auto;
+  width: auto;
+  height: auto;
+  border: 1px solid RoyalBlue;
+  margin-bottom: 5px;
 }
 .cBoxSlider {
-    width: 330px;
-    height: 20px;
-    margin-top: 3px;
-    background-color: #efe4dc;
-    border-color: #fff;
+  width: 330px;
+  height: 20px;
+  margin-top: 3px;
+  background-color: #efe4dc;
+  border-color: #fff;
 }
 .cIntroduction {
-    width: auto;
-    padding-left: 10px;
-    padding-bottom: 20px;
-    font-size: medium;
-    line-height: 25px;
-    background-color: #efe4dc;
-    border: 3px solid #dc772f;
-    margin: 2px;
+  width: auto;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  font-size: medium;
+  line-height: 25px;
+  background-color: #efe4dc;
+  border: 3px solid #dc772f;
+  margin: 2px;
 }
 .cFormula {
-    width: auto;
-    vertical-align: text-top;
-    line-height: 35px;
-    background-color: #efe4dc;
-    border: 3px solid #dc772f;
+  width: auto;
+  vertical-align: text-top;
+  line-height: 35px;
+  background-color: #efe4dc;
+  border: 3px solid #dc772f;
 }
 .cParameter {
-    width: auto;
-    vertical-align: text-top;
-    line-height: 35px;
-    background-color: #efe4dc;
-    border: 3px solid #dc772f;
+  width: auto;
+  vertical-align: text-top;
+  line-height: 35px;
+  background-color: #efe4dc;
+  border: 3px solid #dc772f;
 }
 .cText {
-    margin: 5px;
-    text-align: justify;
-    font-size: 11pt;
-    font-family: Arial;
+  margin: 5px;
+  text-align: justify;
+  font-size: 11pt;
+  font-family: Arial;
 }
 ul {
-    padding: 0;
-    margin-bottom: 0;
-    margin-top: 0;
+  padding: 0;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
-.cons-input{
+.cons-input {
   width: 70px;
 }
 
-.cons-input-submit{
+.cons-input-submit {
   width: 100px;
   margin-left: 20px;
 }
 
-.cons-input-remove{
+.cons-input-remove {
   width: 50px;
-  
 }
 
-.low-p-margin{
-    margin-top: 8px;
-    margin-bottom: 8px;
+.low-p-margin {
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
-.range-input{
-    margin-top: 10px;
+.range-input {
+  margin-top: 10px;
 }
 
-.cartesian_range_setter{
-    display: none;
+.cartesian_range_setter {
+  display: none;
 }
 
-.cylindrical_range_setter{
-    display: none;
+.cylindrical_range_setter {
+  display: none;
 }
 
-.spherical_range_setter{
-    display: none;
+.spherical_range_setter {
+  display: none;
 }
 
-.gradient-funct{
-    display: none;
+.gradient-funct {
+  display: none;
 }
 
-.divergence-funct{
-    display:none;
+.divergence-funct {
+  display: none;
 }
 
-.curl-funct{
-    display: none;
+.curl-funct {
+  display: none;
 }
 
-.second-row{
-
+.second-row {
 }
 
-.selector{
-    margin-left: 60px;
+.selector {
+  margin-left: 60px;
 }
