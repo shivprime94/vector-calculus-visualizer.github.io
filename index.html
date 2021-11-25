@@ -701,6 +701,7 @@
         }
 
         var gradientArrow;
+        var stoprotatingA = false;
 
         function calculateAndShowGradient(){
 
@@ -747,6 +748,29 @@
             
             scene.add(gradientArrow);
 
+        }
+
+
+        
+        
+        function rotateA(){
+            stoprotatingA = false;
+            const myAxis = new THREE.Vector3(1, 1, 0);
+            gradientArrow.rotateOnWorldAxis(myAxis, 0);
+            gradientArrow.rotation.z += 0.008;
+            function animate() {
+                if(stoprotatingA == true ){
+                return;
+                }
+                gradientArrow.rotation.z += 0.008;
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        function stoprotationA(){
+            stoprotatingA = true;
         }
 
         function clearGradientArrow(){
@@ -1587,7 +1611,13 @@
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
                                             <b>Specify a vector to view the rate of change along it</b>
-                        
+                                            <div>
+                                                <button onclick="rotateA()">Rotate</button>
+                                            </div>
+                                            <div>
+                                                <button onclick="stoprotationA()">Rotate</button>
+                                            </div>
+    
                                         
                                             <div>
                                                 <b>A</b>=
@@ -1604,10 +1634,7 @@
                                                     </div>
                                                 
                                             </div>
-                                            <div>
-                                                
-                                            </div>
-
+                                            
                                         </td>
 
 
