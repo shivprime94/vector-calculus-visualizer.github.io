@@ -1,94 +1,106 @@
-
 <html>
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Gradient Curl Divergence</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=11"> 
-	<link rel="stylesheet" type="text/css" href="./external/jsx/jsxgraph.css">
-	<script type="text/javascript" src="./external/jsx/jsxgraphcore.js"></script>
-	<link type="text/css" href="./external/jqueryui/css/ui-lightness/jquery-ui-1.8.22.custom.css" rel="stylesheet">
-	<script type="text/javascript" src="./external/jqueryui/js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="./external/jqueryui/js/jquery-ui-1.8.22.custom.min.js"></script>
-	<script type="text/javascript" src="./external/Complex/Complex.js"></script>
-	<script type="text/javascript" src="./Scripts/matrix.js"></script>
-	<script type="text/javascript" src="./Scripts/camera.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <link rel="stylesheet" type="text/css" href="./external/jsx/jsxgraph.css">
+    <script type="text/javascript" src="./external/jsx/jsxgraphcore.js"></script>
+    <link type="text/css" href="./external/jqueryui/css/ui-lightness/jquery-ui-1.8.22.custom.css" rel="stylesheet">
+    <script type="text/javascript" src="./external/jqueryui/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="./external/jqueryui/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="./external/Complex/Complex.js"></script>
+    <script type="text/javascript" src="./Scripts/matrix.js"></script>
+    <script type="text/javascript" src="./Scripts/camera.js"></script>
     <script type="text/javascript" src="./Scripts/Board3D.js"></script>
-	<link rel="stylesheet" type="text/css" href="./Styles/common.css">
-    <link rel="stylesheet" type="text/css" href="./Styles/common01.css"> 
-    
-    <!--- Define the format of box --->				
-				<style type="text/css">
-            /**************** Graph Box  ****************/
-            .cBoxGraph
-            {
-                width:500px;
-                height:500px;
-            }
-            /**************** ToolBar Box  ****************/
-            .cBoxPara
-            {
-                width:500px;
-                height:500px;
-            }
-            .cBoxSlider
-            {
-                width:500px;
-                height:90px; 
-            }
-            .cBoxSli
-            {
-                width:500px;
-                height:250px; 
-            }
+    <link rel="stylesheet" type="text/css" href="./Styles/common.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/common01.css">
+
+    <!--- Define the format of box --->
+    <style type="text/css">
+        /**************** Graph Box  ****************/
+        .cBoxGraph {
+            width: 500px;
+            height: 500px;
+        }
+
+        /**************** ToolBar Box  ****************/
+        .cBoxPara {
+            width: 500px;
+            height: 500px;
+        }
+
+        .cBoxSlider {
+            width: 500px;
+            height: 90px;
+        }
+
+        .cBoxSli {
+            width: 500px;
+            height: 250px;
+        }
 
 
-            /* Curl Slider */
+        /* Curl Slider */
 
 
-            .slidecontainer {
-                width: 100%; /* Width of the outside container */
-            }
+        .slidecontainer {
+            width: 100%;
+            /* Width of the outside container */
+        }
 
-            /* The slider itself */
-            .slider {
+        /* The slider itself */
+        .slider {
             margin-left: 10px;
-            -webkit-appearance: none;  /* Override default CSS styles */
+            -webkit-appearance: none;
+            /* Override default CSS styles */
             appearance: none;
-            width: 75%; /* Full-width */
-            height: 15px; /* Specified height */
-            background: #d3d3d3; /* Grey background */
-            outline: none; /* Remove outline */
-            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            width: 75%;
+            /* Full-width */
+            height: 15px;
+            /* Specified height */
+            background: #d3d3d3;
+            /* Grey background */
+            outline: none;
+            /* Remove outline */
+            opacity: 0.7;
+            /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s;
+            /* 0.2 seconds transition on hover */
             transition: opacity .2s;
-            }
+        }
 
-            /* Mouse-over effects */
-            .slider:hover {
-            opacity: 1; /* Fully shown on mouse-over */
-            }
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1;
+            /* Fully shown on mouse-over */
+        }
 
-            /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-            .slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Override default look */
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /* Override default look */
             appearance: none;
-            width: 15px; /* Set a specific slider handle width */
-            height: 15px; /* Slider handle height */
-            background: #04AA6D; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-            }
+            width: 15px;
+            /* Set a specific slider handle width */
+            height: 15px;
+            /* Slider handle height */
+            background: #04AA6D;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
 
-            .slider::-moz-range-thumb {
-            width: 15px; /* Set a specific slider handle width */
-            height: 15px; /* Slider handle height */
-            background: #04AA6D; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-            }
-
-            
-
-
-
+        .slider::-moz-range-thumb {
+            width: 15px;
+            /* Set a specific slider handle width */
+            height: 15px;
+            /* Slider handle height */
+            background: #04AA6D;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
     </style>
 
     <!-- ======================= Shader =======================-->
@@ -103,16 +115,14 @@
     <script type="text/javascript" src="./external/ConvexGeometry.js"></script>
     <script type="text/javascript" src="external/jsonTxt.js"></script>
 
-       
-    <script>	
-        
-	   // jQuerUI Setting
-        $(function ()
-        {
-            $("input").click(function ()
-            {   
+
+    <script>
+
+        // jQuerUI Setting
+        $(function () {
+            $("input").click(function () {
                 if ($(this)[0].type == "text")
-                $(this).select();
+                    $(this).select();
             });
 
             $("#ulGraphs").sortable();
@@ -121,46 +131,46 @@
         }
         );
 
-		// Constants
-		var myHalfPI = 0.5*Math.PI;
-		var deg2rad = Math.PI/180.0;
-							
+        // Constants
+        var myHalfPI = 0.5 * Math.PI;
+        var deg2rad = Math.PI / 180.0;
+
         // variables
-		var vR_factor = 50; // coordinates ( 0< R < 1 ) --> scene ratio
-        var vR = vR_factor*0.3; // spherical coordinate R
-        var vTheta = 0.5*Math.PI; // spherical coordinate Theta (radians)
-        var vPhi = 0.5*Math.PI; // spherical coordinate Phi (radians)
-		
+        var vR_factor = 50; // coordinates ( 0< R < 1 ) --> scene ratio
+        var vR = vR_factor * 0.3; // spherical coordinate R
+        var vTheta = 0.5 * Math.PI; // spherical coordinate Theta (radians)
+        var vPhi = 0.5 * Math.PI; // spherical coordinate Phi (radians)
+
         var vPtVector3 = new THREE.Vector3(0, 0, 0);  // Cartesian coordinates of obvervation point
         var SEPARATION = 200, AMOUNTX = 10, AMOUNTY = 10;
-		var camera, scene, renderer, controls;
-        
-       
+        var camera, scene, renderer, controls;
+
+
         // Scence children	
         var unit_phi_vector, unit_R_vector, unit_Theta_vector;
-		var mouseDown = false;
-	    var lastMouseX = null;
-	    var lastMouseY = null;
+        var mouseDown = false;
+        var lastMouseX = null;
+        var lastMouseY = null;
 
-        
+
         //Gradient Field and related
-        var gradientField={
-            "x":0,
-            "y":0,
-            "z":0
+        var gradientField = {
+            "x": 0,
+            "y": 0,
+            "z": 0
         };
         var constValuePlanes;
-       
-        
+
+
         //Vector Field
 
-        var cx=0,cy=0,cz=0;
-        var vectorField={
-            "i":0,
-            "j":0,
-            "k":0
+        var cx = 0, cy = 0, cz = 0;
+        var vectorField = {
+            "i": 0,
+            "j": 0,
+            "k": 0
         }
-        var x,y,z;
+        var x, y, z;
 
         //divergence
 
@@ -173,239 +183,227 @@
         var interval = null;
         var curlPlane;
         var msphere;
-        var vec0=vec1=vec2=vec3=new THREE.Vector3(0,0,0);
+        var vec0 = vec1 = vec2 = vec3 = new THREE.Vector3(0, 0, 0);
         var planelength;
-						
 
-		
-        
+
+
+
         //Theta以Degree呈現
-       
-        
 
-        
+
+
+
     </script>
 
     <script>
-        
-         
-		// Initialization of webpage
-        function webGLStart()
-        {
+
+
+        // Initialization of webpage
+        function webGLStart() {
             var canvas = document.getElementById("WebGLCanvas");
-                    
+
             var container, separation = 100, amountX = 50, amountY = 50,
 
-            container = document.createElement('div');
+                container = document.createElement('div');
             canvas.appendChild(container);
-                    
+
             scene = new THREE.Scene();
             // camera = new THREE.OrthographicCamera( -200, 200, 125, -100 );
-            camera = new THREE.PerspectiveCamera(50,canvas.width/canvas.height,0.1,3000);
-          
-           
-            
-            controls = new THREE.OrbitControls( camera , canvas )
-                    
-            renderer  = new THREE.WebGLRenderer();
-            renderer.setSize( 800, 500 );
-            container.appendChild( renderer.domElement );
+            camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 3000);
+
+
+
+            controls = new THREE.OrbitControls(camera, canvas)
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(800, 500);
+            container.appendChild(renderer.domElement);
             renderer.domElement.id = "MyCanvas";
             //console.log( renderer.domElement);//////////////////////
 
 
             var material = new THREE.SpriteCanvasMaterial
-            ({
-                color: 0xffffff,
-                program: function ( context )
-                {
-                    context.beginPath();
-                    context.arc( 0, 0, 0.5, 0, PI2, true );
-                    context.fill();
-                }
-            });
-            
+                ({
+                    color: 0xffffff,
+                    program: function (context) {
+                        context.beginPath();
+                        context.arc(0, 0, 0.5, 0, PI2, true);
+                        context.fill();
+                    }
+                });
+
             // set x axis
-            var dir = new THREE.Vector3( 0, 0, 1 );
-            var origin = new THREE.Vector3( 0, 0, -100 );
+            var dir = new THREE.Vector3(0, 0, 1);
+            var origin = new THREE.Vector3(0, 0, -100);
             var length = 240;
             var hex = 0xff0000;
-            var GridLine = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
-            scene.add( GridLine );		
+            var GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
 
             //set y axis
-            dir = new THREE.Vector3( 1, 0, 0 );
-            origin = new THREE.Vector3( -100, 0, 0 );
+            dir = new THREE.Vector3(1, 0, 0);
+            origin = new THREE.Vector3(-100, 0, 0);
             length = 240;
             hex = 0x00ff00;
-            GridLine = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
-            scene.add( GridLine );	
+            GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
 
             //set z axis
-            dir = new THREE.Vector3( 0, 1, 0 );
-            origin = new THREE.Vector3( 0, -100, 0 );
+            dir = new THREE.Vector3(0, 1, 0);
+            origin = new THREE.Vector3(0, -100, 0);
             length = 240;
             hex = 0x5555ff;
-            GridLine = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
-            scene.add( GridLine );
+            GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
 
             // Light source
 
             var light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set( 500, 5, 5 );
-            light.target.position.set(0,0,0);
-            scene.add( light );
+            light.position.set(500, 5, 5);
+            light.target.position.set(0, 0, 0);
+            scene.add(light);
 
 
             var light = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(light);
 
             var light = new THREE.DirectionalLight(0xffffff, 0.5);
-            light.position.set( -800, 100, 100 );
-            light.target.position.set(0,0,0);
-            scene.add( light );
-////////////////////////////////////////////////////////////////
-                
-          
+            light.position.set(-800, 100, 100);
+            light.target.position.set(0, 0, 0);
+            scene.add(light);
+            ////////////////////////////////////////////////////////////////
+
+
 
             // ///FONT /////////////////////////////
 
             // var loader = new THREE.FontLoader();
 
             var myFont = new THREE.Font(jsonTxt);
-            var xGeometry = new THREE.TextGeometry("x",{
-                font : myFont,
-                size : 10,
-                height : 1
+            var xGeometry = new THREE.TextGeometry("x", {
+                font: myFont,
+                size: 10,
+                height: 1
             });
-            var yGeometry = new THREE.TextGeometry("y",{
-                font : myFont,
-                size : 10,
-                height : 1
+            var yGeometry = new THREE.TextGeometry("y", {
+                font: myFont,
+                size: 10,
+                height: 1
             });
-            var zGeometry = new THREE.TextGeometry("z",{
-                font : myFont,
-                size : 10,
-                height : 1
+            var zGeometry = new THREE.TextGeometry("z", {
+                font: myFont,
+                size: 10,
+                height: 1
             });
 
-            var xMaterial = new THREE.MeshBasicMaterial({color:0xff0000});
-            var yMaterial = new THREE.MeshBasicMaterial({color:0x00ff00});
-            var zMaterial = new THREE.MeshBasicMaterial({color:0x5555ff});
-            
-            var xScene = new THREE.Mesh(xGeometry,xMaterial);
-            var yScene = new THREE.Mesh(yGeometry,yMaterial);
-            var zScene = new THREE.Mesh(zGeometry,zMaterial);
+            var xMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            var yMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            var zMaterial = new THREE.MeshBasicMaterial({ color: 0x5555ff });
 
-            xScene.position.set(0,-5,150);
-            xScene.rotation.set(0,Math.PI/2,0)
+            var xScene = new THREE.Mesh(xGeometry, xMaterial);
+            var yScene = new THREE.Mesh(yGeometry, yMaterial);
+            var zScene = new THREE.Mesh(zGeometry, zMaterial);
+
+            xScene.position.set(0, -5, 150);
+            xScene.rotation.set(0, Math.PI / 2, 0)
             scene.add(xScene);
 
-            yScene.position.set(150,-5,0);
+            yScene.position.set(150, -5, 0);
             scene.add(yScene);
 
-            zScene.position.set(-5,150,0);
+            zScene.position.set(-5, 150, 0);
             scene.add(zScene);
 
 
-            
+
             //////////////////////////////////
-            
+
             //設定一開始畫面的視角
             camera.position.x = 1000;
             camera.position.y = -1000;
             camera.position.z = 1000;
-            
-            camera.position.set(500, 200 , 500);
+
+            camera.position.set(500, 200, 500);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
+            camera.lookAt(scene.position);
 
             // camera.rotation.x=180*Math.PI/180;
-            
-           
+
+
             animate();
         };
-        
-        function animate() 
-		{
-            requestAnimationFrame( animate );
+
+        function animate() {
+            requestAnimationFrame(animate);
             controls.update()
             render();
         };
-        
-        function updateControls()
-		{         
+
+        function updateControls() {
             controls.update();
         };
-       
-		// Update the plot
-        function render()
-		{
-             
-            
-            if(document.getElementById("increment-x-rotation")=="Active"){
+
+        // Update the plot
+        function render() {
+
+
+            if (document.getElementById("increment-x-rotation") == "Active") {
                 console.log("Active");
             }
-            
-								
-            renderer.render( scene, camera );
+
+
+            renderer.render(scene, camera);
         };
-        
-        
-        function FrontView()
-        {
-            camera.position.set(0, 0 , 400);
+
+
+        function FrontView() {
+            camera.position.set(0, 0, 400);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-            
+            camera.lookAt(scene.position);
+
         }
-        function BackView()
-        {
-            camera.position.set(0, 0 , -400);
+        function BackView() {
+            camera.position.set(0, 0, -400);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-        }	
-        function TopView()
-        {
-            camera.position.set(0, 400 , 0);
+            camera.lookAt(scene.position);
+        }
+        function TopView() {
+            camera.position.set(0, 400, 0);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-            scene.rotation.set ( 0 , 0 , 0);
-        }	
-        function BottomView()
-        {
-            camera.position.set(0, -400 , 0);
+            camera.lookAt(scene.position);
+            scene.rotation.set(0, 0, 0);
+        }
+        function BottomView() {
+            camera.position.set(0, -400, 0);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-        }	
-        function RightView()
-        {
-            camera.position.set(400, 0 , 0);
+            camera.lookAt(scene.position);
+        }
+        function RightView() {
+            camera.position.set(400, 0, 0);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-        }	
-        function LeftView()
-        {
-            camera.position.set(-400, 0 , 0);
+            camera.lookAt(scene.position);
+        }
+        function LeftView() {
+            camera.position.set(-400, 0, 0);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
-        }					
-        function SideView()
-        {
-            camera.position.set(-500, 500 , 500);
+            camera.lookAt(scene.position);
+        }
+        function SideView() {
+            camera.position.set(-500, 500, 500);
             camera.rotation.set(0, 0, 0);
-            camera.lookAt( scene.position );
+            camera.lookAt(scene.position);
         }
 
         //========================== set initials ========================
 
-        window.onload = function() {
+        window.onload = function () {
 
             selectFunctionChoice();
             //showRangeSetter();
         };
 
-        
+
 
         //============================== Range Setting =============================
         /*
@@ -488,106 +486,151 @@
         */
         //======================== Function Choice ==========================
 
-        function selectFunctionChoice(){
+        function selectFunctionChoice() {
             // console.log("clicked");
             var gradient = document.querySelector(".gradient-funct");
             var divergence = document.querySelector(".divergence-funct");
             var curl = document.querySelector(".curl-funct");
             //var curl_quick_access = document.querySelector("#curl-quick-rotation-access"); 
 
-            if(document.getElementById("choice-gradient").checked==true){
+            if (document.getElementById("choice-gradient").checked == true) {
                 // console.log("gradient clidcked");
-                gradient.style.display="inherit";
-                divergence.style.display="none";
-                curl.style.display="none";
+                gradient.style.display = "inherit";
+                divergence.style.display = "none";
+                curl.style.display = "none";
                 clearAllDivergence();
                 clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
-            else if(document.getElementById("choice-divergence").checked==true){
+            else if (document.getElementById("choice-divergence").checked == true) {
                 // console.log("divergence clidcked");
-                gradient.style.display="none";
-                divergence.style.display="inherit";
-                curl.style.display="none";
+                gradient.style.display = "none";
+                divergence.style.display = "inherit";
+                curl.style.display = "none";
                 clearGradientField();
                 clearGradientArrow();
                 clearCurlPlane();
                 //curl_quick_access.style.display="none";
             }
-            else if(document.getElementById("choice-curl").checked==true){
+            else if (document.getElementById("choice-curl").checked == true) {
                 // console.log("curl clidcked");
-                gradient.style.display="none";
-                divergence.style.display="none";
-                curl.style.display="inherit";
+                gradient.style.display = "none";
+                divergence.style.display = "none";
+                curl.style.display = "inherit";
                 clearGradientField();
                 clearGradientArrow();
                 clearAllDivergence();
                 //curl_quick_access.style.display="inherit";
             }
-            
+
         }
 
 
         //==============================  Graient ===================================
-        function setGradientField(){
-            gradientField.x=document.getElementById("grad-x-comp").value;
-            gradientField.y= document.getElementById("grad-y-comp").value;
-            gradientField.z=document.getElementById("grad-z-comp").value;
+        function setGradientField() {
+            gradientField.x = document.getElementById("grad-x-comp").value;
+            gradientField.y = document.getElementById("grad-y-comp").value;
+            gradientField.z = document.getElementById("grad-z-comp").value;
 
-            if(gradientField.x==""){
-                 gradientField.x=0;
-                 document.getElementById("grad-x-comp").value=0;
+            if (gradientField.x == "") {
+                gradientField.x = 0;
+                document.getElementById("grad-x-comp").value = 0;
             }
-            if(gradientField.y==""){
-                 gradientField.y=0;
-                 document.getElementById("grad-y-comp").value=0;
+            if (gradientField.y == "") {
+                gradientField.y = 0;
+                document.getElementById("grad-y-comp").value = 0;
             }
-            if(gradientField.z==""){
-                 gradientField.z=0;
-                 document.getElementById("grad-z-comp").value=0;
+            if (gradientField.z == "") {
+                gradientField.z = 0;
+                document.getElementById("grad-z-comp").value = 0;
             }
 
 
             plotConstValuePlanes();
         }
-        var cvPlane0, cvPlane1,cvPlane2,cvPlane3;
+        var cvPlane0, cvPlane1, cvPlane2, cvPlane3;
         var GradientLine;
-        function clearGradientField(){
-            if(GradientLine!=null){
+        function clearGradientField() {
+            if (GradientLine != null) {
                 scene.remove(GradientLine);
             }
-            if(cvPlane1!=null){
+            if (cvPlane1 != null) {
                 scene.remove(cvPlane1);
             }
-            if(cvPlane2!=null){
+            if (cvPlane2 != null) {
                 scene.remove(cvPlane2);
             }
-            if(cvPlane3!=null){
+            if (cvPlane3 != null) {
                 scene.remove(cvPlane3);
             }
         }
-        function plotConstValuePlanes(){
-            if(GradientLine!=null){
+        function plotConstValuePlanes() {
+            if (GradientLine != null) {
                 scene.remove(GradientLine);
             }
 
-            document.getElementById("gradient-of-field").value = gradientField.x+"i  +"+
-                                                                  gradientField.y+"j  +"+
-                                                                  gradientField.z+"k ";
+            document.getElementById("gradient-of-field").value = gradientField.x + "i  +" +
+                gradientField.y + "j  +" +
+                gradientField.z + "k ";
+            var gradientMag = Math.sqrt(gradientField.x * gradientField.x +
+                gradientField.y * gradientField.y +
+                gradientField.z * gradientField.z)
 
-            document.getElementById("gradient-magnitude-of-field").value = Math.sqrt(gradientField.x*gradientField.x+
-                                                                                      gradientField.y*gradientField.y+
-                                                                                       gradientField.z*gradientField.z )
-            
+            document.getElementById("gradient-magnitude-of-field").value = gradientMag;
+
             // var dir = new THREE.Vector3(gradientField.x,gradientField.y,gradientField.z);
-            var dir = new THREE.Vector3(gradientField.y,gradientField.z,gradientField.x);
+            var dir = new THREE.Vector3(gradientField.y, gradientField.z, gradientField.x);
             dir.normalize();
-            var origin = new THREE.Vector3( 0, 0, 0 );
+            var origin = new THREE.Vector3(0, 0, 0);
             var length = 200;
             var hex = 0x9815f9;
-            GradientLine = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
-            scene.add( GradientLine );	
-            
+            GradientLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GradientLine);
+            console.log(gradientMag)
+            var myLabelx = new THREE.Font(jsonTxt);
+            var xGeometry = new THREE.TextGeometry("V = " + gradientMag, {
+                font: myLabelx,
+                size: 10,
+                height: 1
+            });
+
+            if (xScene == null || yScene == null || zScene == null) {
+                scene.remove(xScene);
+                scene.remove(yScene);
+                scene.remove(zScene);
+            }
+
+            var xMaterial = new THREE.MeshBasicMaterial({ color: 0xbb9177 });
+            var xScene = new THREE.Mesh(xGeometry, xMaterial);
+            xScene.position.set(0, 50, 0);
+            xScene.rotation.set(0, 0, 0)
+            scene.add(xScene);
+
+
+            var myLabely = new THREE.Font(jsonTxt);
+            var yGeometry = new THREE.TextGeometry("V = " + gradientMag, {
+                font: myLabely,
+                size: 10,
+                height: 1
+            });
+            var yMaterial = new THREE.MeshBasicMaterial({ color: 0xbb91ff });
+            var yScene = new THREE.Mesh(yGeometry, yMaterial);
+            yScene.position.set(0, 50, 50);
+            yScene.rotation.set(0, 0, 0)
+            scene.add(yScene);
+
+
+            var myLabelz = new THREE.Font(jsonTxt);
+            var xGeometry = new THREE.TextGeometry("V = " + gradientMag, {
+                font: myLabelz,
+                size: 10,
+                height: 1
+            });
+            var zMaterial = new THREE.MeshBasicMaterial({ color: 0xbb9111 });
+            var zScene = new THREE.Mesh(xGeometry, zMaterial);
+            zScene.position.set(0, 50, -50);
+            zScene.rotation.set(0, 0, 0)
+            scene.add(zScene);
 
 
             // var centroid1 = new THREE.Vector3(50,50,50);
@@ -619,19 +662,19 @@
             cvPlane0.lookAt(0,0,0);
             scene.add(cvPlane0);
             */
-            if(cvPlane1!=null){
+            if (cvPlane1 != null) {
                 scene.remove(cvPlane1);
             }
 
-            var distance1=new THREE.Vector3(-50,-50,-50);
-            var planeGeometry1=new THREE.PlaneGeometry(100,100);
-            var planeMaterial1 = new THREE.MeshPhongMaterial({color: 0xbb9111, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-            cvPlane1 = new THREE.Mesh( planeGeometry1, planeMaterial1 );
-            cvPlane1.position.set(dir.x*distance1.x,dir.y*distance1.y,dir.z*distance1.z);
-            cvPlane1.lookAt(0,0,0);
+            var distance1 = new THREE.Vector3(-50, -50, -50);
+            var planeGeometry1 = new THREE.PlaneGeometry(100, 100);
+            var planeMaterial1 = new THREE.MeshPhongMaterial({ color: 0xbb9111, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+            cvPlane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
+            cvPlane1.position.set(dir.x * distance1.x, dir.y * distance1.y, dir.z * distance1.z);
+            cvPlane1.lookAt(0, 0, 0);
             scene.add(cvPlane1);
 
-            
+
             /////////////////////////////////////////////////////////////////////////////////
 
             // var centroid2 = new THREE.Vector3(100,100,100);
@@ -652,16 +695,16 @@
             // var cvPlane2 = new THREE.Mesh(planeGeometry2, planeMaterial);
             // scene.add(cvPlane2);
 
-            if(cvPlane2!=null){
+            if (cvPlane2 != null) {
                 scene.remove(cvPlane2);
             }
 
-            var distance2=new THREE.Vector3(0.00001,0.00001,0.00001);
-            var planeGeometry2=new THREE.PlaneGeometry(100,100);
-            var planeMaterial2 = new THREE.MeshPhongMaterial({color: 0xbb9177, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-            cvPlane2 = new THREE.Mesh( planeGeometry2, planeMaterial2 );
-            cvPlane2.position.set(dir.x*distance2.x,dir.y*distance2.y,dir.z*distance2.z);
-            cvPlane2.lookAt(0,0,0);
+            var distance2 = new THREE.Vector3(0.00001, 0.00001, 0.00001);
+            var planeGeometry2 = new THREE.PlaneGeometry(100, 100);
+            var planeMaterial2 = new THREE.MeshPhongMaterial({ color: 0xbb9177, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+            cvPlane2 = new THREE.Mesh(planeGeometry2, planeMaterial2);
+            cvPlane2.position.set(dir.x * distance2.x, dir.y * distance2.y, dir.z * distance2.z);
+            cvPlane2.lookAt(0, 0, 0);
             scene.add(cvPlane2);
 
             /////////////////////////////////////////////////////////////////////////////////
@@ -684,16 +727,16 @@
             // var cvPlane3 = new THREE.Mesh(planeGeometry3, planeMaterial);
             // scene.add(cvPlane3);
 
-            if(cvPlane3!=null){
+            if (cvPlane3 != null) {
                 scene.remove(cvPlane3);
             }
 
-            var distance3=new THREE.Vector3(50,50,50);
-            var planeGeometry3=new THREE.PlaneGeometry(100,100);
-            var planeMaterial3 = new THREE.MeshPhongMaterial({color: 0xbb91ff, side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-            cvPlane3 = new THREE.Mesh( planeGeometry3, planeMaterial3 );
-            cvPlane3.position.set(dir.x*distance3.x,dir.y*distance3.y,dir.z*distance3.z);
-            cvPlane3.lookAt(0,0,0);
+            var distance3 = new THREE.Vector3(50, 50, 50);
+            var planeGeometry3 = new THREE.PlaneGeometry(100, 100);
+            var planeMaterial3 = new THREE.MeshPhongMaterial({ color: 0xbb91ff, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+            cvPlane3 = new THREE.Mesh(planeGeometry3, planeMaterial3);
+            cvPlane3.position.set(dir.x * distance3.x, dir.y * distance3.y, dir.z * distance3.z);
+            cvPlane3.lookAt(0, 0, 0);
             scene.add(cvPlane3);
 
 
@@ -702,184 +745,182 @@
 
         var gradientArrow;
 
-        function calculateAndShowGradient(){
+        function calculateAndShowGradient() {
 
-            var vecx=document.getElementById("grad-x-vec").value;
-            var vecy=document.getElementById("grad-y-vec").value;
-            var vecz=document.getElementById("grad-z-vec").value;
+            var vecx = document.getElementById("grad-x-vec").value;
+            var vecy = document.getElementById("grad-y-vec").value;
+            var vecz = document.getElementById("grad-z-vec").value;
 
-            if(vecx==""){
-                vecx=0;
-                document.getElementById("grad-x-vec").value=0;
+            if (vecx == "") {
+                vecx = 0;
+                document.getElementById("grad-x-vec").value = 0;
             }
-            if(vecy==""){
-                vecy=0;
-                document.getElementById("grad-y-vec").value=0;
+            if (vecy == "") {
+                vecy = 0;
+                document.getElementById("grad-y-vec").value = 0;
             }
-            if(vecz==""){
-                vecz=0;
-                document.getElementById("grad-z-vec").value=0;
+            if (vecz == "") {
+                vecz = 0;
+                document.getElementById("grad-z-vec").value = 0;
             }
 
 
-            var mag=Math.sqrt(vecx*vecx+vecy*vecy+vecz*vecz);
+            var mag = Math.sqrt(vecx * vecx + vecy * vecy + vecz * vecz);
 
 
-            var ans=(gradientField.x*vecx + gradientField.y*vecy + gradientField.z*vecz )/mag;
+            var ans = (gradientField.x * vecx + gradientField.y * vecy + gradientField.z * vecz) / mag;
 
             document.getElementById("gradient_along_given_direction").value = ans;
 
-            var dir = new THREE.Vector3(vecy/mag,vecz/mag,vecx/mag);
-            var origin = new THREE.Vector3( 0, 0, 0 );
+            var dir = new THREE.Vector3(vecy / mag, vecz / mag, vecx / mag);
+            var origin = new THREE.Vector3(0, 0, 0);
             var length = 50;
             var hex = 0xffffff;
-            if(gradientArrow!=null){
+            if (gradientArrow != null) {
                 scene.remove(gradientArrow);
             }
-            if(mag == 0)
-            {
-                gradientArrow = new THREE.ArrowHelper(dir , origin, 0, hex ,0 ,0 );
+            if (mag == 0) {
+                gradientArrow = new THREE.ArrowHelper(dir, origin, 0, hex, 0, 0);
             }
-            else
-            {
-                gradientArrow = new THREE.ArrowHelper(dir , origin, length, hex ,10 ,5 );
+            else {
+                gradientArrow = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
             }
-            
+
             scene.add(gradientArrow);
 
         }
 
-        function clearGradientArrow(){
-            if(gradientArrow!=null){
+        function clearGradientArrow() {
+            if (gradientArrow != null) {
                 scene.remove(gradientArrow);
             }
         }
 
         //==============================  Divergence ===================================
 
-        function setVectorField(){
-            var vi=document.getElementById("fld-i-comp").value;
-            var vj=document.getElementById("fld-j-comp").value;
-            var vk=document.getElementById("fld-k-comp").value;
+        function setVectorField() {
+            var vi = document.getElementById("fld-i-comp").value;
+            var vj = document.getElementById("fld-j-comp").value;
+            var vk = document.getElementById("fld-k-comp").value;
 
-            if(vi=="" && vj=="" && vk==""){
-                document.getElementById("fld-i-comp").value=vectorField.i;
-                document.getElementById("fld-j-comp").value=vectorField.j;
-                document.getElementById("fld-k-comp").value=vectorField.k;
+            if (vi == "" && vj == "" && vk == "") {
+                document.getElementById("fld-i-comp").value = vectorField.i;
+                document.getElementById("fld-j-comp").value = vectorField.j;
+                document.getElementById("fld-k-comp").value = vectorField.k;
             }
-            else{
-                if(vi=="") vectorField.i=document.getElementById("fld-i-comp").value=0;
-                else vectorField.i=vi;
+            else {
+                if (vi == "") vectorField.i = document.getElementById("fld-i-comp").value = 0;
+                else vectorField.i = vi;
 
-                if(vj=="") vectorField.j=document.getElementById("fld-j-comp").value=0;
+                if (vj == "") vectorField.j = document.getElementById("fld-j-comp").value = 0;
                 else vectorField.j = vj;
 
-                if(vk=="") vectorField.k=document.getElementById("fld-k-comp").value=0;
-                else vectorField.k=vk;
-               
+                if (vk == "") vectorField.k = document.getElementById("fld-k-comp").value = 0;
+                else vectorField.k = vk;
+
             }
 
         }
-        function setVectorField2(){
-            var vi=document.getElementById("fld-i-comp2").value;
-            var vj=document.getElementById("fld-j-comp2").value;
-            var vk=document.getElementById("fld-k-comp2").value;
+        function setVectorField2() {
+            var vi = document.getElementById("fld-i-comp2").value;
+            var vj = document.getElementById("fld-j-comp2").value;
+            var vk = document.getElementById("fld-k-comp2").value;
 
-            if(vi=="" && vj=="" && vk==""){
-                document.getElementById("fld-i-comp2").value=vectorField.i;
-                document.getElementById("fld-j-comp2").value=vectorField.j;
-                document.getElementById("fld-k-comp2").value=vectorField.k;
+            if (vi == "" && vj == "" && vk == "") {
+                document.getElementById("fld-i-comp2").value = vectorField.i;
+                document.getElementById("fld-j-comp2").value = vectorField.j;
+                document.getElementById("fld-k-comp2").value = vectorField.k;
             }
-            else{
-                if(vi=="") vectorField.i=document.getElementById("fld-i-comp2").value=0;
-                else vectorField.i=vi;
+            else {
+                if (vi == "") vectorField.i = document.getElementById("fld-i-comp2").value = 0;
+                else vectorField.i = vi;
 
-                if(vj=="") vectorField.j=document.getElementById("fld-j-comp2").value=0;
+                if (vj == "") vectorField.j = document.getElementById("fld-j-comp2").value = 0;
                 else vectorField.j = vj;
 
-                if(vk=="") vectorField.k=document.getElementById("fld-k-comp2").value=0;
-                else vectorField.k=vk;
-               
+                if (vk == "") vectorField.k = document.getElementById("fld-k-comp2").value = 0;
+                else vectorField.k = vk;
+
             }
         }
-        function clearAllDivergence(){
-            if(divergenceCube!=null){
+        function clearAllDivergence() {
+            if (divergenceCube != null) {
                 scene.remove(divergenceCube);
             }
         }
 
-        function calculateAndShowDivergence(){
+        function calculateAndShowDivergence() {
 
-            if(divergenceCube!=null){
+            if (divergenceCube != null) {
                 scene.remove(divergenceCube);
             }
             var ccx = document.getElementById("div-inp-x").value;
             var ccy = document.getElementById("div-inp-y").value;
             var ccz = document.getElementById("div-inp-z").value;
 
-            if(ccx=="" && ccy=="" && ccz ==""){
-                document.getElementById("div-inp-x").value=cx;
-                document.getElementById("div-inp-z").value=cy;
-                document.getElementById("div-inp-y").value=cz;
+            if (ccx == "" && ccy == "" && ccz == "") {
+                document.getElementById("div-inp-x").value = cx;
+                document.getElementById("div-inp-z").value = cy;
+                document.getElementById("div-inp-y").value = cz;
             }
-            else{
-                if(ccx=="") {
-                    cx=0;
-                    document.getElementById("div-inp-x").value=0;
+            else {
+                if (ccx == "") {
+                    cx = 0;
+                    document.getElementById("div-inp-x").value = 0;
                 }
-                else cx=parseFloat(ccx);
+                else cx = parseFloat(ccx);
 
-                if(ccy==""){
-                    cy=0;
-                    document.getElementById("div-inp-y").value=0;
+                if (ccy == "") {
+                    cy = 0;
+                    document.getElementById("div-inp-y").value = 0;
                 }
-                else cy=parseFloat(ccy);
+                else cy = parseFloat(ccy);
 
-                if(ccz==""){
-                    cz=0;
-                    document.getElementById("div-inp-z").value=0;
-                } 
-                else cz=parseFloat(ccz);
+                if (ccz == "") {
+                    cz = 0;
+                    document.getElementById("div-inp-z").value = 0;
+                }
+                else cz = parseFloat(ccz);
             }
 
 
-            var ds=document.getElementById("div-size").value;
+            var ds = document.getElementById("div-size").value;
 
-            if(ds==""){
-                deltaSize=0.1;
-                document.getElementById("div-size").value=0.1;
+            if (ds == "") {
+                deltaSize = 0.1;
+                document.getElementById("div-size").value = 0.1;
             }
-            else{
-                deltaSize=parseFloat(ds);
+            else {
+                deltaSize = parseFloat(ds);
             }
 
 
 
-            var geometry = new THREE.BoxGeometry(vR_factor* deltaSize, vR_factor*deltaSize, vR_factor*deltaSize );
-            var material = new THREE.MeshPhongMaterial( {color: 0xaaff00,opacity: 0.8,transparent: true} );
-            divergenceCube = new THREE.Mesh( geometry, material );
-            divergenceCube.position.z=cx*vR_factor;
-            divergenceCube.position.x=cy*vR_factor;
-            divergenceCube.position.y=cz*vR_factor;
+            var geometry = new THREE.BoxGeometry(vR_factor * deltaSize, vR_factor * deltaSize, vR_factor * deltaSize);
+            var material = new THREE.MeshPhongMaterial({ color: 0xaaff00, opacity: 0.8, transparent: true });
+            divergenceCube = new THREE.Mesh(geometry, material);
+            divergenceCube.position.z = cx * vR_factor;
+            divergenceCube.position.x = cy * vR_factor;
+            divergenceCube.position.y = cz * vR_factor;
             scene.add(divergenceCube);
 
 
             divergence = 0.0;
             var partation = 10;
-            var del = deltaSize/partation;
-            
+            var del = deltaSize / partation;
+
 
             //along x face
-            var x0=cx+deltaSize/2  ;
-            var y0=cy-deltaSize/2 + del/2;
-            var z0=cz+deltaSize/2 - del/2;
-        
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
+            var x0 = cx + deltaSize / 2;
+            var y0 = cy - deltaSize / 2 + del / 2;
+            var z0 = cz + deltaSize / 2 - del / 2;
+
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
                     x = x0;
-                    y = y0 + j*del;
-                    z = z0 - i*del;
-                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    y = y0 + j * del;
+                    z = z0 - i * del;
+                    let outVal = evaluationOfInput(vectorField.i, x, y, z);
                     divergence += outVal;
                     //divergence += eval(vectorField.i);
                     // console.log(divergence);
@@ -887,16 +928,16 @@
             }
 
             //along -x face
-            x0 = cx - deltaSize/2;
-            y0 = cy - deltaSize/2 + del/2;
-            z0 = cz + deltaSize/2 - del/2;
+            x0 = cx - deltaSize / 2;
+            y0 = cy - deltaSize / 2 + del / 2;
+            z0 = cz + deltaSize / 2 - del / 2;
 
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
                     x = x0;
-                    y = y0 + j*del;
-                    z = z0 - i*del;
-                    let outVal = evaluationOfInput(vectorField.i,x,y,z);
+                    y = y0 + j * del;
+                    z = z0 - i * del;
+                    let outVal = evaluationOfInput(vectorField.i, x, y, z);
                     divergence -= outVal;
                     //divergence -= eval(vectorField.i);
                     // console.log(divergence);
@@ -905,16 +946,16 @@
 
             //along y face
 
-            x0 = cx + deltaSize/2 - del/2;
-            y0 = cy + deltaSize/2;
-            z0 = cz + deltaSize/2 - del/2;
+            x0 = cx + deltaSize / 2 - del / 2;
+            y0 = cy + deltaSize / 2;
+            z0 = cz + deltaSize / 2 - del / 2;
 
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
-                    x = x0 - j*del;
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
+                    x = x0 - j * del;
                     y = y0;
-                    z = z0 - i*del;
-                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    z = z0 - i * del;
+                    let outVal = evaluationOfInput(vectorField.j, x, y, z);
                     divergence += outVal;
                     //divergence += eval(vectorField.j);
                     // console.log(divergence);
@@ -923,16 +964,16 @@
 
             //along -y face
 
-            x0 = cx + deltaSize/2 - del/2;
-            y0 = cy - deltaSize/2;
-            z0 = cz + deltaSize/2 - del/2;
+            x0 = cx + deltaSize / 2 - del / 2;
+            y0 = cy - deltaSize / 2;
+            z0 = cz + deltaSize / 2 - del / 2;
 
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
-                    x = x0 - j*del;
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
+                    x = x0 - j * del;
                     y = y0;
-                    z = z0 - i*del;
-                    let outVal = evaluationOfInput(vectorField.j,x,y,z);
+                    z = z0 - i * del;
+                    let outVal = evaluationOfInput(vectorField.j, x, y, z);
                     divergence -= outVal;
                     //divergence -= eval(vectorField.j);
                     // console.log(divergence);
@@ -942,16 +983,16 @@
 
             //along z face
 
-            x0 = cx + deltaSize/2 - del/2;
-            y0 = cy - deltaSize/2 + del/2;
-            z0 = cz + deltaSize/2;
+            x0 = cx + deltaSize / 2 - del / 2;
+            y0 = cy - deltaSize / 2 + del / 2;
+            z0 = cz + deltaSize / 2;
 
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
-                    x = x0 - j*del;
-                    y = y0 + i*del;
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
+                    x = x0 - j * del;
+                    y = y0 + i * del;
                     z = z0;
-                    let outVal = evaluationOfInput(vectorField.k,x,y,z);
+                    let outVal = evaluationOfInput(vectorField.k, x, y, z);
                     divergence += outVal;
                     //divergence += eval(vectorField.k);
                     // console.log(divergence);
@@ -960,16 +1001,16 @@
 
             //along -z face
 
-            x0 = cx + deltaSize/2 - del/2;
-            y0 = cy - deltaSize/2 + del/2;
-            z0 = cz - deltaSize/2;
+            x0 = cx + deltaSize / 2 - del / 2;
+            y0 = cy - deltaSize / 2 + del / 2;
+            z0 = cz - deltaSize / 2;
 
-            for(var i=0;i<partation;i++){
-                for(var j=0;j<partation;j++){
-                    x = x0 - j*del;
-                    y = y0 + i*del;
+            for (var i = 0; i < partation; i++) {
+                for (var j = 0; j < partation; j++) {
+                    x = x0 - j * del;
+                    y = y0 + i * del;
                     z = z0;
-                    let outVal = evaluationOfInput(vectorField.k,x,y,z); 
+                    let outVal = evaluationOfInput(vectorField.k, x, y, z);
                     divergence -= outVal;
                     // divergence -= eval(vectorField.k);
                     // console.log(divergence);
@@ -979,8 +1020,8 @@
 
 
             document.getElementById("outward-flow-value").value = divergence.toFixed(4);
-            var volume = deltaSize**3;
-            divergence = divergence/(volume);
+            var volume = deltaSize ** 3;
+            divergence = divergence / (volume);
             document.getElementById("total_cube_volume").value = volume.toFixed(4);
             document.getElementById("divergence-value1").value = divergence.toFixed(4);
             document.getElementById("divergence-value2").value = divergence.toFixed(4);
@@ -991,45 +1032,39 @@
             //ctx.font = "50px Arial";
             //ctx.fillText("Hello World",5,30);
             //ctx.fillText("Hello World",250,250);.
-            
-            document.getElementById("show-outward-flow-on-canvas").innerText=divergence.toFixed(4);
-            document.getElementById("show-divergence-on-canvas").innerText=divergence.toFixed(4);
-             
+
+            document.getElementById("show-outward-flow-on-canvas").innerText = divergence.toFixed(4);
+            document.getElementById("show-divergence-on-canvas").innerText = divergence.toFixed(4);
+
         }
 
-        function evaluationOfInput(strInput,x,y,z)
-        {
+        function evaluationOfInput(strInput, x, y, z) {
             let finalValue = 1;
             let valLen = 0;
             let floatValue = parseFloat(strInput);
-            if (!floatValue)
-                {
-                    floatValue = 1;
-                    valLen = 0;
-                    
-                }
-            else
-            {
+            if (!floatValue) {
+                floatValue = 1;
+                valLen = 0;
+
+            }
+            else {
                 valLen = floatValue.toString().length;
             }
-            
+
             for (let k = valLen; k < strInput.length; k++) {
-                if (strInput[k] == "x")
-                {
+                if (strInput[k] == "x") {
                     finalValue = x * finalValue;
                 }
-                else if (strInput[k] == "y")
-                {
+                else if (strInput[k] == "y") {
                     finalValue = y * finalValue;
                 }
-                else if (strInput[k] == "z")
-                {
+                else if (strInput[k] == "z") {
                     finalValue = z * finalValue;
                 }
             }
-           
-            finalValue = finalValue*floatValue;
-            
+
+            finalValue = finalValue * floatValue;
+
             return finalValue;
 
         }
@@ -1037,266 +1072,266 @@
         //================================= Curl ========================================//
 
         var totalCurl = {
-            "i":0,
-            "j":0,
-            "k":0
+            "i": 0,
+            "j": 0,
+            "k": 0
         };
-        var curlPlaneDir = new THREE.Vector3(0,0,0);
+        var curlPlaneDir = new THREE.Vector3(0, 0, 0);
         var originalCurlPlane;
-        
-        var cplanex,cplaney,cplanez;
-        var showPlane=false;
+
+        var cplanex, cplaney, cplanez;
+        var showPlane = false;
 
 
-        function showCurlPlane(){
-            showPlane=true;
+        function showCurlPlane() {
+            showPlane = true;
             var cpx = document.getElementById("curl-inp-x").value;
             var cpy = document.getElementById("curl-inp-y").value;
             var cpz = document.getElementById("curl-inp-z").value;
 
-            if(cpx=="" && cpy=="" && cpz==""){
-                cplanex= document.getElementById("curl-inp-x").value=0;
-                cplaney= document.getElementById("curl-inp-y").value=0;
-                cplanez= document.getElementById("curl-inp-z").value=0;
+            if (cpx == "" && cpy == "" && cpz == "") {
+                cplanex = document.getElementById("curl-inp-x").value = 0;
+                cplaney = document.getElementById("curl-inp-y").value = 0;
+                cplanez = document.getElementById("curl-inp-z").value = 0;
             }
 
-            else{
-                if(cpx=="") cplanex= document.getElementById("curl-inp-x").value=0;
+            else {
+                if (cpx == "") cplanex = document.getElementById("curl-inp-x").value = 0;
                 else cplanex = parseFloat(cpx);
 
-                if(cpy=="") cplaney= document.getElementById("curl-inp-y").value=0;
+                if (cpy == "") cplaney = document.getElementById("curl-inp-y").value = 0;
                 else cplaney = parseFloat(cpy);
 
-                if(cpz=="") cplanez= document.getElementById("curl-inp-z").value=0;
+                if (cpz == "") cplanez = document.getElementById("curl-inp-z").value = 0;
                 else cplanez = parseFloat(cpz);
             }
 
 
             var pl = document.getElementById("len-size").value;
 
-            if(pl=="") planelength = document.getElementById("len-size").value = 0.5;
+            if (pl == "") planelength = document.getElementById("len-size").value = 0.5;
             else planelength = parseFloat(pl);
 
-            cplanex*=vR_factor;
-            cplaney*=vR_factor;
-            cplanez*=vR_factor;
+            cplanex *= vR_factor;
+            cplaney *= vR_factor;
+            cplanez *= vR_factor;
             planelength *= vR_factor;
 
 
             planePlaneSet();
 
         }
-        
-        function addVector(a,b){
-            return new THREE.Vector3(a.x+b.x,a.y+b.y,a.z+b.z);
+
+        function addVector(a, b) {
+            return new THREE.Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
         }
 
 
-        function rotateAboutX(func_id){
+        function rotateAboutX(func_id) {
             var rotationAngle = document.getElementById(func_id).value
-            
+
             var radianOutput = rotationAngle * (Math.PI / 180);
 
             curlPlane.rotation.z = radianOutput;
-            
+
             var theta = curlPlane.rotation.z;
-            if(originalCurlPlane=="y"){
-                curlPlaneDir.y=Math.cos(theta);
-                curlPlaneDir.z=Math.sin(theta);
+            if (originalCurlPlane == "y") {
+                curlPlaneDir.y = Math.cos(theta);
+                curlPlaneDir.z = Math.sin(theta);
             }
-            else{
-                curlPlaneDir.y=-Math.sin(theta);
-                curlPlaneDir.z=Math.cos(theta);
+            else {
+                curlPlaneDir.y = -Math.sin(theta);
+                curlPlaneDir.z = Math.cos(theta);
             }
 
         }
-    
-        function rotateAboutY(func_id){
+
+        function rotateAboutY(func_id) {
             var rotationAngle = document.getElementById(func_id).value
-            
+
             var radianOutput = rotationAngle * (Math.PI / 180);
 
 
             curlPlane.rotation.x = radianOutput;
             var theta = curlPlane.rotation.x;
-            if(originalCurlPlane=="x"){
-                curlPlaneDir.x=Math.cos(theta);
-                curlPlaneDir.z=-Math.sin(theta);
+            if (originalCurlPlane == "x") {
+                curlPlaneDir.x = Math.cos(theta);
+                curlPlaneDir.z = -Math.sin(theta);
             }
-            else{
-                curlPlaneDir.x=Math.sin(theta);
-                curlPlaneDir.z=Math.cos(theta);
+            else {
+                curlPlaneDir.x = Math.sin(theta);
+                curlPlaneDir.z = Math.cos(theta);
             }
 
 
         }
 
-        function rotateAboutZ(func_id){
+        function rotateAboutZ(func_id) {
             var rotationAngle = document.getElementById(func_id).value
-            
+
             var radianOutput = rotationAngle * (Math.PI / 180);
 
-                curlPlane.rotation.y = rotationAngle;
-                var theta = curlPlane.rotation.y;
-                if(originalCurlPlane=="x"){
-                    curlPlaneDir.x=Math.cos(theta);
-                    curlPlaneDir.y=Math.sin(theta);
-                }
-                else{
-                    curlPlaneDir.x=-Math.sin(theta);
-                    curlPlaneDir.y=Math.cos(theta);
-                }
+            curlPlane.rotation.y = rotationAngle;
+            var theta = curlPlane.rotation.y;
+            if (originalCurlPlane == "x") {
+                curlPlaneDir.x = Math.cos(theta);
+                curlPlaneDir.y = Math.sin(theta);
+            }
+            else {
+                curlPlaneDir.x = -Math.sin(theta);
+                curlPlaneDir.y = Math.cos(theta);
+            }
         }
-        
 
 
-        function stopRotating(){
+
+        function stopRotating() {
             calculateCurl();
-        }       
+        }
 
 
-        function calculateCurl(){
+        function calculateCurl() {
 
-            var del=0.00001;
-            var x=cplanex+del;
-            var y=cplaney;
-            var z=cplanez;
+            var del = 0.00001;
+            var x = cplanex + del;
+            var y = cplaney;
+            var z = cplanez;
 
-            totalCurl.i=delDelY(vectorField.k)-delDelZ(vectorField.j);
-            totalCurl.j=delDelZ(vectorField.i)-delDelX(vectorField.k);
-            totalCurl.k=delDelX(vectorField.j)-delDelY(vectorField.i);
+            totalCurl.i = delDelY(vectorField.k) - delDelZ(vectorField.j);
+            totalCurl.j = delDelZ(vectorField.i) - delDelX(vectorField.k);
+            totalCurl.k = delDelX(vectorField.j) - delDelY(vectorField.i);
 
-            
+
             curlPlaneDir.normalize();
-            var circulation = curlPlaneDir.x * totalCurl.i + curlPlaneDir.y*totalCurl.j + curlPlaneDir.z*totalCurl.k;
+            var circulation = curlPlaneDir.x * totalCurl.i + curlPlaneDir.y * totalCurl.j + curlPlaneDir.z * totalCurl.k;
 
-            document.getElementById("show-curl").value=circulation.toFixed(4);
-            circulation = circulation*(planelength/vR_factor)*(planelength/vR_factor)
-            document.getElementById("show-circulation").value=circulation.toFixed(4);
-            
+            document.getElementById("show-curl").value = circulation.toFixed(4);
+            circulation = circulation * (planelength / vR_factor) * (planelength / vR_factor)
+            document.getElementById("show-circulation").value = circulation.toFixed(4);
 
-        }    
 
-        function delDelX(f){
-            var x,y,z;
+        }
+
+        function delDelX(f) {
+            var x, y, z;
             var del = 0.00001;
-            x=(cplanex/vR_factor)+del;
-            y=cplaney/vR_factor;
-            z=cplanez/vR_factor;
-            var final = evaluationOfInput(f,x,y,z);
+            x = (cplanex / vR_factor) + del;
+            y = cplaney / vR_factor;
+            z = cplanez / vR_factor;
+            var final = evaluationOfInput(f, x, y, z);
             //var final = eval(f);
-            
-            x=cplanex/vR_factor;
-            y=cplaney/vR_factor;
-            z=cplanez/vR_factor;
-            var initial = evaluationOfInput(f,x,y,z);   
+
+            x = cplanex / vR_factor;
+            y = cplaney / vR_factor;
+            z = cplanez / vR_factor;
+            var initial = evaluationOfInput(f, x, y, z);
             //var initial = eval(f);
-            
 
-            return((final-initial)/del);
 
-        } 
-        function delDelY(f){
-            var x,y,z;
+            return ((final - initial) / del);
+
+        }
+        function delDelY(f) {
+            var x, y, z;
             var del = 0.00001;
-            x=cplanex/vR_factor;
-            y=(cplaney/vR_factor)+del;
-            z=cplanez/vR_factor;
-            var final = evaluationOfInput(f,x,y,z);
+            x = cplanex / vR_factor;
+            y = (cplaney / vR_factor) + del;
+            z = cplanez / vR_factor;
+            var final = evaluationOfInput(f, x, y, z);
             // var final = eval(f);
-            x=cplanex/vR_factor;
-            y=cplaney/vR_factor;
-            z=cplanez/vR_factor;
-            var initial =evaluationOfInput(f,x,y,z);
+            x = cplanex / vR_factor;
+            y = cplaney / vR_factor;
+            z = cplanez / vR_factor;
+            var initial = evaluationOfInput(f, x, y, z);
             // var initial = eval(f);
 
-            return((final-initial)/del);
+            return ((final - initial) / del);
 
-        } 
-        function delDelZ(f){
-            var x,y,z;
+        }
+        function delDelZ(f) {
+            var x, y, z;
             var del = 0.00001;
-            x=cplanex/vR_factor;
-            y=cplaney/vR_factor;
-            z=(cplanez/vR_factor)+del;
-            var final =evaluationOfInput(f,x,y,z);
+            x = cplanex / vR_factor;
+            y = cplaney / vR_factor;
+            z = (cplanez / vR_factor) + del;
+            var final = evaluationOfInput(f, x, y, z);
             // var final = eval(f);
-            x=cplanex/vR_factor;
-            y=cplaney/vR_factor;
-            z=cplanez/vR_factor;
-            var initial =evaluationOfInput(f,x,y,z);
+            x = cplanex / vR_factor;
+            y = cplaney / vR_factor;
+            z = cplanez / vR_factor;
+            var initial = evaluationOfInput(f, x, y, z);
             // var initial = eval(f);
 
-            return((final-initial)/del);
+            return ((final - initial) / del);
 
-        } 
+        }
 
 
-        function setPointAtDistance(starting_vec, along_unit_vec, distance){
-            var vec =new THREE.Vector3(along_unit_vec.x * distance ,
-                                         along_unit_vec.y*distance ,
-                                         along_unit_vec.z * distance);
-            var a = addVector(starting_vec,vec);
-            x=a.x;
-            y=a.y;
-            z=a.z;
+        function setPointAtDistance(starting_vec, along_unit_vec, distance) {
+            var vec = new THREE.Vector3(along_unit_vec.x * distance,
+                along_unit_vec.y * distance,
+                along_unit_vec.z * distance);
+            var a = addVector(starting_vec, vec);
+            x = a.x;
+            y = a.y;
+            z = a.z;
             return a;
         }
-        function clearCurlPlane(){
-            if(curlPlane!=null){
+        function clearCurlPlane() {
+            if (curlPlane != null) {
                 scene.remove(curlPlane);
             }
         }
-        function planePlaneSet(){
-            if(document.getElementById("plane_xy").checked==true){
-                
-                if(showPlane==false){
-                    document.getElementsByName("xy-rotation-button")[0].style.display="";
-                    document.getElementsByName("yz-rotation-button")[0].style.display="none";
-                    document.getElementsByName("zx-rotation-button")[0].style.display="none";
+        function planePlaneSet() {
+            if (document.getElementById("plane_xy").checked == true) {
 
-                    document.getElementsByName("xy-rotation-button")[1].style.display="";
-                    document.getElementsByName("yz-rotation-button")[1].style.display="none";
-                    document.getElementsByName("zx-rotation-button")[1].style.display="none";
+                if (showPlane == false) {
+                    document.getElementsByName("xy-rotation-button")[0].style.display = "";
+                    document.getElementsByName("yz-rotation-button")[0].style.display = "none";
+                    document.getElementsByName("zx-rotation-button")[0].style.display = "none";
+
+                    document.getElementsByName("xy-rotation-button")[1].style.display = "";
+                    document.getElementsByName("yz-rotation-button")[1].style.display = "none";
+                    document.getElementsByName("zx-rotation-button")[1].style.display = "none";
                     return;
                 }
-                if(curlPlane!=null){
+                if (curlPlane != null) {
                     scene.remove(curlPlane);
                 }
 
                 originalCurlPlane = "z";
-                
+
 
                 var geometry = new THREE.Geometry();
                 geometry.vertices.push(
-                    new THREE.Vector3(-planelength/2, 0,-planelength/2),
-                    new THREE.Vector3(planelength/2, 0, -planelength/2),
-                    new THREE.Vector3(planelength/2, 0,  planelength/2),
-                    new THREE.Vector3(-planelength/2, 0, planelength/2)
+                    new THREE.Vector3(-planelength / 2, 0, -planelength / 2),
+                    new THREE.Vector3(planelength / 2, 0, -planelength / 2),
+                    new THREE.Vector3(planelength / 2, 0, planelength / 2),
+                    new THREE.Vector3(-planelength / 2, 0, planelength / 2)
                 );
-                geometry.faces.push( new THREE.Face3(0, 1, 2));
-                geometry.faces.push( new THREE.Face3(0, 2, 3));
+                geometry.faces.push(new THREE.Face3(0, 1, 2));
+                geometry.faces.push(new THREE.Face3(0, 2, 3));
 
-                var pMaterial = new THREE.MeshBasicMaterial({color:0xd3dd06,side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-                var pPlane = new THREE.Mesh(geometry,pMaterial);
+                var pMaterial = new THREE.MeshBasicMaterial({ color: 0xd3dd06, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+                var pPlane = new THREE.Mesh(geometry, pMaterial);
 
-                var dir = new THREE.Vector3( 0, 1, 0 );
-                var origin = new THREE.Vector3( 0, 0, 0 );
+                var dir = new THREE.Vector3(0, 1, 0);
+                var origin = new THREE.Vector3(0, 0, 0);
                 var length = 60;
                 var hex = 0xffffff;
-                var arrow = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
+                var arrow = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
 
                 curlPlane = new THREE.Group();
                 curlPlane.add(pPlane);
                 curlPlane.add(arrow);
                 scene.add(curlPlane);
 
-                
-                curlPlaneDir.x=0;           
-                curlPlaneDir.y=0;           
-                curlPlaneDir.z=1;           
 
-                curlPlane.position.set(cplaney,cplanez,cplanex);
+                curlPlaneDir.x = 0;
+                curlPlaneDir.y = 0;
+                curlPlaneDir.z = 1;
+
+                curlPlane.position.set(cplaney, cplanez, cplanex);
                 /*
                 document.getElementsByName("xy-rotation-button")[0].style.display="";
                 document.getElementsByName("yz-rotation-button")[0].style.display="none";
@@ -1305,58 +1340,58 @@
                 document.getElementsByName("yz-rotation-button")[1].style.display="none";
                 document.getElementsByName("zx-rotation-button")[1].style.display="none";
                 */
-                if(showPlane==true){
+                if (showPlane == true) {
                     calculateCurl();
                 }
             }
-            else if(document.getElementById("plane_yz").checked==true){
+            else if (document.getElementById("plane_yz").checked == true) {
 
-                if(showPlane==false){
-                    document.getElementsByName("xy-rotation-button")[0].style.display="none";
-                    document.getElementsByName("yz-rotation-button")[0].style.display="";
-                    document.getElementsByName("zx-rotation-button")[0].style.display="none";
+                if (showPlane == false) {
+                    document.getElementsByName("xy-rotation-button")[0].style.display = "none";
+                    document.getElementsByName("yz-rotation-button")[0].style.display = "";
+                    document.getElementsByName("zx-rotation-button")[0].style.display = "none";
 
-                    document.getElementsByName("xy-rotation-button")[1].style.display="none";
-                    document.getElementsByName("yz-rotation-button")[1].style.display="";
-                    document.getElementsByName("zx-rotation-button")[1].style.display="none";
+                    document.getElementsByName("xy-rotation-button")[1].style.display = "none";
+                    document.getElementsByName("yz-rotation-button")[1].style.display = "";
+                    document.getElementsByName("zx-rotation-button")[1].style.display = "none";
                     return;
                 }
-                if(curlPlane!=null){
+                if (curlPlane != null) {
                     scene.remove(curlPlane);
                 }
 
-                originalCurlPlane="x";
+                originalCurlPlane = "x";
 
                 var geometry = new THREE.Geometry();
                 geometry.vertices.push(
-                    new THREE.Vector3(-planelength/2, planelength/2, 0),
-                    new THREE.Vector3(-planelength/2, -planelength/2, 0),
-                    new THREE.Vector3(planelength/2, -planelength/2, 0),
-                    new THREE.Vector3(planelength/2,planelength/2,0)
+                    new THREE.Vector3(-planelength / 2, planelength / 2, 0),
+                    new THREE.Vector3(-planelength / 2, -planelength / 2, 0),
+                    new THREE.Vector3(planelength / 2, -planelength / 2, 0),
+                    new THREE.Vector3(planelength / 2, planelength / 2, 0)
                 );
-                geometry.faces.push( new THREE.Face3(0, 1, 2));
-                geometry.faces.push( new THREE.Face3(0, 2, 3));
-            
-                var pMaterial = new THREE.MeshBasicMaterial({color:0xd3dd06,side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-                var pPlane = new THREE.Mesh(geometry,pMaterial);
+                geometry.faces.push(new THREE.Face3(0, 1, 2));
+                geometry.faces.push(new THREE.Face3(0, 2, 3));
 
-                var dir = new THREE.Vector3( 0, 0, 1 );
-                var origin = new THREE.Vector3( 0, 0, 0 );
+                var pMaterial = new THREE.MeshBasicMaterial({ color: 0xd3dd06, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+                var pPlane = new THREE.Mesh(geometry, pMaterial);
+
+                var dir = new THREE.Vector3(0, 0, 1);
+                var origin = new THREE.Vector3(0, 0, 0);
                 var length = 60;
                 var hex = 0xffffff;
-                var arrow = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
+                var arrow = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
 
                 curlPlane = new THREE.Group();
                 curlPlane.add(pPlane);
                 curlPlane.add(arrow);
                 scene.add(curlPlane);
 
-                curlPlaneDir.x=1;           
-                curlPlaneDir.y=0;           
-                curlPlaneDir.z=0; 
+                curlPlaneDir.x = 1;
+                curlPlaneDir.y = 0;
+                curlPlaneDir.z = 0;
 
 
-                curlPlane.position.set(cplaney,cplanez,cplanex);
+                curlPlane.position.set(cplaney, cplanez, cplanex);
                 /*
                 document.getElementsByName("xy-rotation-button")[0].style.display="none";
                 document.getElementsByName("yz-rotation-button")[0].style.display="";
@@ -1365,58 +1400,58 @@
                 document.getElementsByName("yz-rotation-button")[1].style.display="";
                 document.getElementsByName("zx-rotation-button")[1].style.display="none";
                 */
-                if(showPlane==true){
+                if (showPlane == true) {
                     calculateCurl();
                 }
             }
-            else{
+            else {
 
-                if(showPlane==false){
-                    document.getElementsByName("xy-rotation-button")[0].style.display="none";
-                    document.getElementsByName("yz-rotation-button")[0].style.display="none";
-                    document.getElementsByName("zx-rotation-button")[0].style.display="";
+                if (showPlane == false) {
+                    document.getElementsByName("xy-rotation-button")[0].style.display = "none";
+                    document.getElementsByName("yz-rotation-button")[0].style.display = "none";
+                    document.getElementsByName("zx-rotation-button")[0].style.display = "";
 
-                    document.getElementsByName("xy-rotation-button")[1].style.display="none";
-                    document.getElementsByName("yz-rotation-button")[1].style.display="none";
-                    document.getElementsByName("zx-rotation-button")[1].style.display="";
+                    document.getElementsByName("xy-rotation-button")[1].style.display = "none";
+                    document.getElementsByName("yz-rotation-button")[1].style.display = "none";
+                    document.getElementsByName("zx-rotation-button")[1].style.display = "";
                     return;
                 }
-                if(curlPlane!=null){
+                if (curlPlane != null) {
                     scene.remove(curlPlane);
                 }
 
-                originalCurlPlane="y";
+                originalCurlPlane = "y";
 
                 var geometry = new THREE.Geometry();
                 geometry.vertices.push(
-                    new THREE.Vector3(0,-planelength/2,-planelength/2),
-                    new THREE.Vector3(0, planelength/2, -planelength/2),
-                    new THREE.Vector3(0, planelength/2, planelength/2),
-                    new THREE.Vector3(0,-planelength/2,planelength/2)
+                    new THREE.Vector3(0, -planelength / 2, -planelength / 2),
+                    new THREE.Vector3(0, planelength / 2, -planelength / 2),
+                    new THREE.Vector3(0, planelength / 2, planelength / 2),
+                    new THREE.Vector3(0, -planelength / 2, planelength / 2)
                 );
-                geometry.faces.push( new THREE.Face3(0, 1, 2));
-                geometry.faces.push( new THREE.Face3(0, 2, 3));
+                geometry.faces.push(new THREE.Face3(0, 1, 2));
+                geometry.faces.push(new THREE.Face3(0, 2, 3));
 
-                var pMaterial = new THREE.MeshBasicMaterial({color:0xd3dd06,side: THREE.DoubleSide,opacity: 0.8,transparent: true});
-                var pPlane = new THREE.Mesh(geometry,pMaterial);
+                var pMaterial = new THREE.MeshBasicMaterial({ color: 0xd3dd06, side: THREE.DoubleSide, opacity: 0.8, transparent: true });
+                var pPlane = new THREE.Mesh(geometry, pMaterial);
 
-                var dir = new THREE.Vector3( 1, 0, 0 );
-                var origin = new THREE.Vector3( 0, 0, 0 );
+                var dir = new THREE.Vector3(1, 0, 0);
+                var origin = new THREE.Vector3(0, 0, 0);
                 var length = 60;
                 var hex = 0xffffff;
-                var arrow = new THREE.ArrowHelper( dir, origin, length, hex ,10 ,5 );
+                var arrow = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
 
                 curlPlane = new THREE.Group();
                 curlPlane.add(pPlane);
                 curlPlane.add(arrow);
                 scene.add(curlPlane);
 
-                curlPlaneDir.x=0;           
-                curlPlaneDir.y=1;           
-                curlPlaneDir.z=0; 
+                curlPlaneDir.x = 0;
+                curlPlaneDir.y = 1;
+                curlPlaneDir.z = 0;
 
 
-                curlPlane.position.set(cplaney,cplanez,cplanex);
+                curlPlane.position.set(cplaney, cplanez, cplanex);
                 /*
                 document.getElementsByName("xy-rotation-button")[0].style.display="none";
                 document.getElementsByName("yz-rotation-button")[0].style.display="none";
@@ -1425,13 +1460,13 @@
                 document.getElementsByName("yz-rotation-button")[1].style.display="none";
                 document.getElementsByName("zx-rotation-button")[1].style.display="";
                 */
-                if(showPlane==true){
+                if (showPlane == true) {
                     calculateCurl();
                 }
             }
         }
-            
-        
+
+
 
 
 
@@ -1439,197 +1474,380 @@
 
 
     <style type="text/css">
-            .MathJax_Hover_Frame 
-            {
-                border-radius: .25em; 
-                -webkit-border-radius: .25em;
-                -moz-border-radius: .25em;
-                -khtml-border-radius: .25em; 
-                box-shadow: 0px 0px 15px #83A;
-                -webkit-box-shadow: 0px 0px 15px #83A;
-                -moz-box-shadow: 0px 0px 15px #83A; 
-                -khtml-box-shadow: 0px 0px 15px #83A;
-                border: 1px solid #A6D ! important;
-                display: inline-block;
-                position: absolute
-            }
-            .MathJax_Hover_Arrow 
-            {
-                position: absolute;
-                width: 15px;
-                height: 11px;
-                cursor: pointer
-            }
+        .MathJax_Hover_Frame {
+            border-radius: .25em;
+            -webkit-border-radius: .25em;
+            -moz-border-radius: .25em;
+            -khtml-border-radius: .25em;
+            box-shadow: 0px 0px 15px #83A;
+            -webkit-box-shadow: 0px 0px 15px #83A;
+            -moz-box-shadow: 0px 0px 15px #83A;
+            -khtml-box-shadow: 0px 0px 15px #83A;
+            border: 1px solid #A6D ! important;
+            display: inline-block;
+            position: absolute
+        }
+
+        .MathJax_Hover_Arrow {
+            position: absolute;
+            width: 15px;
+            height: 11px;
+            cursor: pointer
+        }
     </style>
-				
+
     <style type="text/css">
-        #MathJax_About 
-        {
+        #MathJax_About {
             position: fixed;
             left: 50%;
             width: auto;
             text-align: center;
             border: 3px outset;
-            padding: 1em 2em; 
+            padding: 1em 2em;
             background-color: #DDDDDD;
             color: black;
             cursor: default;
             font-family: message-box;
-            font-size: 120%; 
+            font-size: 120%;
             font-style: normal;
             text-indent: 0;
             text-transform: none;
-            line-height: normal; 
-            letter-spacing: normal; 
+            line-height: normal;
+            letter-spacing: normal;
             word-spacing: normal;
             word-wrap: normal;
-            white-space: nowrap; 
-            float: none; z-index: 201;
-            border-radius: 15px; 
-            -webkit-border-radius: 15px; 
-            -moz-border-radius: 15px; 
-            -khtml-border-radius: 15px; 
+            white-space: nowrap;
+            float: none;
+            z-index: 201;
+            border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            -khtml-border-radius: 15px;
             box-shadow: 0px 10px 20px #808080;
             -webkit-box-shadow: 0px 10px 20px #808080;
             -moz-box-shadow: 0px 10px 20px #808080;
-            -khtml-box-shadow: 0px 10px 20px #808080; 
+            -khtml-box-shadow: 0px 10px 20px #808080;
             filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
         }
-        .MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
-        .MathJax_MenuItem {padding: 2px 2em; background: transparent}
-        .MathJax_MenuTitle {background-color: #CCCCCC; margin: -1px -1px 1px -1px; text-align: center; font-style: italic; font-size: 80%; color: #444444; padding: 2px 0; overflow: hidden}
-        .MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
-        .MathJax_MenuActive .MathJax_MenuArrow {color: white}
-        .MathJax_MenuCheck {position: absolute; left: .7em}
-        .MathJax_MenuRadioCheck {position: absolute; left: 1em}
-        .MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
-        .MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
-        .MathJax_MenuDisabled {color: GrayText}
-        .MathJax_MenuActive {background-color: Highlight; color: HighlightText}
-        .MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+
+        .MathJax_Menu {
+            position: absolute;
+            background-color: white;
+            color: black;
+            width: auto;
+            padding: 2px;
+            border: 1px solid #CCCCCC;
+            margin: 0;
+            cursor: default;
+            font: menu;
+            text-align: left;
+            text-indent: 0;
+            text-transform: none;
+            line-height: normal;
+            letter-spacing: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            float: none;
+            z-index: 201;
+            box-shadow: 0px 10px 20px #808080;
+            -webkit-box-shadow: 0px 10px 20px #808080;
+            -moz-box-shadow: 0px 10px 20px #808080;
+            -khtml-box-shadow: 0px 10px 20px #808080;
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+        }
+
+        .MathJax_MenuItem {
+            padding: 2px 2em;
+            background: transparent
+        }
+
+        .MathJax_MenuTitle {
+            background-color: #CCCCCC;
+            margin: -1px -1px 1px -1px;
+            text-align: center;
+            font-style: italic;
+            font-size: 80%;
+            color: #444444;
+            padding: 2px 0;
+            overflow: hidden
+        }
+
+        .MathJax_MenuArrow {
+            position: absolute;
+            right: .5em;
+            color: #666666
+        }
+
+        .MathJax_MenuActive .MathJax_MenuArrow {
+            color: white
+        }
+
+        .MathJax_MenuCheck {
+            position: absolute;
+            left: .7em
+        }
+
+        .MathJax_MenuRadioCheck {
+            position: absolute;
+            left: 1em
+        }
+
+        .MathJax_MenuLabel {
+            padding: 2px 2em 4px 1.33em;
+            font-style: italic
+        }
+
+        .MathJax_MenuRule {
+            border-top: 1px solid #CCCCCC;
+            margin: 4px 1px 0px
+        }
+
+        .MathJax_MenuDisabled {
+            color: GrayText
+        }
+
+        .MathJax_MenuActive {
+            background-color: Highlight;
+            color: HighlightText
+        }
+
+        .MathJax_Menu_Close {
+            position: absolute;
+            width: 31px;
+            height: 31px;
+            top: -15px;
+            left: -15px
+        }
     </style>
-				
-    <style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
-        #MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
-        #MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+
+    <style type="text/css">
+        #MathJax_Zoom {
+            position: absolute;
+            background-color: #F0F0F0;
+            overflow: auto;
+            display: block;
+            z-index: 301;
+            padding: .5em;
+            border: 1px solid black;
+            margin: 0;
+            font-weight: normal;
+            font-style: normal;
+            text-align: left;
+            text-indent: 0;
+            text-transform: none;
+            line-height: normal;
+            letter-spacing: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            float: none;
+            box-shadow: 5px 5px 15px #AAAAAA;
+            -webkit-box-shadow: 5px 5px 15px #AAAAAA;
+            -moz-box-shadow: 5px 5px 15px #AAAAAA;
+            -khtml-box-shadow: 5px 5px 15px #AAAAAA;
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+        }
+
+        #MathJax_ZoomOverlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 300;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            background-color: white;
+            opacity: 0;
+            filter: alpha(opacity=0)
+        }
+
+        #MathJax_ZoomEventTrap {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 302;
+            display: inline-block;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            background-color: white;
+            opacity: 0;
+            filter: alpha(opacity=0)
+        }
     </style>
-				
-    <style type="text/css">.MathJax_Preview {color: #888}
-        #MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
-        #MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
-        .MathJax_Error {color: #CC0000; font-style: italic}
+
+    <style type="text/css">
+        .MathJax_Preview {
+            color: #888
+        }
+
+        #MathJax_Message {
+            position: fixed;
+            left: 1em;
+            bottom: 1.5em;
+            background-color: #E6E6E6;
+            border: 1px solid #959595;
+            margin: 0px;
+            padding: 2px 8px;
+            z-index: 102;
+            color: black;
+            font-size: 80%;
+            width: auto;
+            white-space: nowrap
+        }
+
+        #MathJax_MSIE_Frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0px;
+            z-index: 101;
+            border: 0px;
+            margin: 0px;
+            padding: 0px
+        }
+
+        .MathJax_Error {
+            color: #CC0000;
+            font-style: italic
+        }
     </style>
-    </head>	
-        
-    <body>
-        <div style="height:30px"></div>
-        <div style="height:2px; background:#dc772f"></div>
-        <div style="height:30px"></div>
-        <div class="container-top">
-            <div class="row">
-                <div class="col1">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td id="WebGLCanvas" style="border: none;margin-left:10px;margin-top:5px;margin-bottom:5px; align:top;" width="878" height="500">  
-                                </td>  
-                            </tr>
-                        </tbody>
-                    </table>    
-                </div>
+</head>
+
+<body>
+    <div style="height:30px"></div>
+    <div style="height:2px; background:#dc772f"></div>
+    <div style="height:30px"></div>
+    <div class="container-top">
+        <div class="row">
+            <div class="col1">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td id="WebGLCanvas"
+                                style="border: none;margin-left:10px;margin-top:5px;margin-bottom:5px; text-align:top;"
+                                width="878" height="500">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="col2">
-                <input type="radio" class="selector" id="choice-gradient" name="function_type" onclick="selectFunctionChoice()" checked ><b> Gradient</b><br><br>
-                <input type="radio" class="selector" id="choice-divergence" name="function_type" onclick="selectFunctionChoice();setVectorField()"><b>Divergence</b><br><br> 
-                <input type="radio" class="selector" id="choice-curl" name="function_type" onclick="selectFunctionChoice();setVectorField2()"> <b>Curl</b><br><br>
+                <input type="radio" class="selector" id="choice-gradient" name="function_type"
+                    onclick="selectFunctionChoice()" checked><b> Gradient</b><br><br>
+                <input type="radio" class="selector" id="choice-divergence" name="function_type"
+                    onclick="selectFunctionChoice();setVectorField()"><b>Divergence</b><br><br>
+                <input type="radio" class="selector" id="choice-curl" name="function_type"
+                    onclick="selectFunctionChoice();setVectorField2()"> <b>Curl</b><br><br>
 
                 <!-- ======================= Gradient =========================     -->
                 <div class="gradient-funct">
                     <tr>
                         <td class="cMain_td" style="width:1000px;">
-                            
-                            
+
+
                             <table>
                                 <tbody>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <div><b>Enter Scalar Field</b> </div>(<i>platform is compatible only for linear functions</i>)
+                                            <div><b>Enter Scalar Field</b> </div>(<i>platform is compatible only for
+                                                linear functions</i>)
                                             <div>
-                                                V = 
+                                                V =
                                                 <input id="grad-x-comp" class="cons-input" type="number" step=0.1>x +
                                                 <input id="grad-y-comp" class="cons-input" type="number" step=0.1>y +
                                                 <input id="grad-z-comp" class="cons-input" type="number" step=0.1>z
 
-                                                
+
                                             </div>
-                                            <input class="cons-input-submit" type="submit" onclick="setGradientField()" value="Set">
-                                            <input class="cons-input-submit" type="submit" onclick="clearGradientField()" value="Clear">
+                                            <input class="cons-input-submit" type="submit" onclick="setGradientField()"
+                                                value="Set">
+                                            <input class="cons-input-submit" type="submit"
+                                                onclick="clearGradientField()" value="Clear">
                                             <br>
-                                        
+
                                             <i><b> Gradient</b> =</i>
-                                            <input id="gradient-of-field" style="margin-top: 10px;margin-left: 10px; width:100px" type="text" readonly>  <br>
+                                            <input id="gradient-of-field"
+                                                style="margin-top: 10px;margin-left: 10px; width:100px" type="text"
+                                                readonly> <br>
                                             <i> <b>|Gradient|</b> =</i>
-                                            <input id="gradient-magnitude-of-field" style="margin-top: 10px;margin-left: 10px;width:100px" type="text" readonly>
+                                            <input id="gradient-magnitude-of-field"
+                                                style="margin-top: 10px;margin-left: 10px;width:100px" type="text"
+                                                readonly>
 
 
-                                        </td>  
-                                                        
+                                        </td>
+
                                     </tr>
                                     <br>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
                                             <b>Specify a vector to view the rate of change along it</b>
-                        
-                                        
+
+
                                             <div>
                                                 <b>A</b>=
-                                                <input id="grad-x-vec" class="cons-input" type="number" step=0.1><b> i</b>+
-                                                <input id="grad-y-vec" class="cons-input" type="number" step=0.1><b> j</b>+
-                                                <input id="grad-z-vec" class="cons-input" type="number" step=0.1><b> k</b>
+                                                <input id="grad-x-vec" class="cons-input" type="number" step=0.1><b>
+                                                    i</b>+
+                                                <input id="grad-y-vec" class="cons-input" type="number" step=0.1><b>
+                                                    j</b>+
+                                                <input id="grad-z-vec" class="cons-input" type="number" step=0.1><b>
+                                                    k</b>
                                             </div>
                                             <div>
-                                                <input onclick="calculateAndShowGradient()" class="cons-input-submit" type="submit" value="Calculate">
-                                                <input onclick="clearGradientArrow()" class="cons-input-submit" type="submit" value="Clear">
-                                                    <div>
-                                                        <i>Rate of change along </i> <b>A</b> = 
-                                                <input type="number" id="gradient_along_given_direction" readonly>
-                                                    </div>
-                                                
+                                                <input onclick="calculateAndShowGradient()" class="cons-input-submit"
+                                                    type="submit" value="Calculate">
+                                                <input onclick="clearGradientArrow()" class="cons-input-submit"
+                                                    type="submit" value="Clear">
+                                                <div>
+                                                    <i>Rate of change along </i> <b>A</b> =
+                                                    <input type="number" id="gradient_along_given_direction" readonly>
+                                                </div>
+
                                             </div>
                                             <div>
-                                                
+
                                             </div>
 
                                         </td>
 
 
                                     </tr>
-                                    
+
                                 </tbody>
                             </table>
-                        </td>		
+                        </td>
                     </tr>
                 </div>
                 <!-- ======================= Divergence =========================     -->
                 <div class="divergence-funct">
                     <tr>
                         <td class="cMain_td" style="width:1000px;">
-                            
-                            
+
+
                             <table>
                                 <tbody>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Enter Vector Field</b><br><i>multiplication (e.g. xy) should be explicitly typed with sign <b>(e.g. x*y)</b></i>
+                                            <b>Enter Vector Field</b><br><i>multiplication (e.g. xy) should be
+                                                explicitly typed with sign <b>(e.g. x*y)</b></i>
                                             <div>
-                                                <b>F</b> = 
-                                                <input id="fld-i-comp" class="cons-input" type="text" step=0.1><b>i</b> +
-                                                <input id="fld-j-comp" class="cons-input" type="text" step=0.1><b>j</b> +
+                                                <b>F</b> =
+                                                <input id="fld-i-comp" class="cons-input" type="text" step=0.1><b>i</b>
+                                                +
+                                                <input id="fld-j-comp" class="cons-input" type="text" step=0.1><b>j</b>
+                                                +
                                                 <input id="fld-k-comp" class="cons-input" type="text" step=0.1><b>k</b>
 
-                                                
+
                                             </div>
-                                            <input onclick="setVectorField()" class="cons-input-submit" type="submit" value="Set">
-                                        </td>                    
+                                            <input onclick="setVectorField()" class="cons-input-submit" type="submit"
+                                                value="Set">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
@@ -1638,133 +1856,168 @@
                                                 Enter the point
                                             </div>
                                             <div>
-                                            x = <input id="div-inp-x" class="cons-input" type="number" step=0.1>,
-                                            y= <input id="div-inp-y" class="cons-input" type="number" step=0.1>,
-                                            z=<input id="div-inp-z" class="cons-input" type="number" step=0.1>
+                                                x = <input id="div-inp-x" class="cons-input" type="number" step=0.1>,
+                                                y= <input id="div-inp-y" class="cons-input" type="number" step=0.1>,
+                                                z=<input id="div-inp-z" class="cons-input" type="number" step=0.1>
                                             </div>
                                             <div>
-                                                &Delta;x = &Delta;y = &Delta;z = <input id="div-size" class="cons-input" type="number" step=0.1>
+                                                &Delta;x = &Delta;y = &Delta;z = <input id="div-size" class="cons-input"
+                                                    type="number" step=0.1>
                                             </div>
                                             <div>
-                                                <input type="submit" onclick="calculateAndShowDivergence()"  value="Calculate and show">
-                                                <input type="submit" onclick="clearAllDivergence()"  value="Clear">
+                                                <input type="submit" onclick="calculateAndShowDivergence()"
+                                                    value="Calculate and show">
+                                                <input type="submit" onclick="clearAllDivergence()" value="Clear">
                                             </div>
                                             <div>
-                                                <i>Outward Flux = </i><input id="outward-flow-value" type="text" readonly style="width:80px;">
-                                                <i>&Delta;v = </i><input id="total_cube_volume" type="text" readonly style="width:80px;"><br>
-                                                <i>(Outward Flow)/</i>&Delta;<i>v = </i><input id="divergence-value1" type="text" readonly style="width:80px;">
-                                                <i>Divergence  = </i><input id="divergence-value2" type="text" readonly style="width:80px;">
+                                                <i>Outward Flux = </i><input id="outward-flow-value" type="text"
+                                                    readonly style="width:80px;">
+                                                <i>&Delta;v = </i><input id="total_cube_volume" type="text" readonly
+                                                    style="width:80px;"><br>
+                                                <i>(Outward Flow)/</i>&Delta;<i>v = </i><input id="divergence-value1"
+                                                    type="text" readonly style="width:80px;">
+                                                <i>Divergence = </i><input id="divergence-value2" type="text" readonly
+                                                    style="width:80px;">
                                             </div>
-                                            <div id="show-outward-flow-on-canvas" style="color:white;position:absolute;top:80px;left:25px;font-size:larger"></div>
-                                            <div id="show-divergence-on-canvas" style="color:white;position:absolute;top:80px;left:750px;font-size:larger"></div>
+                                            <div id="show-outward-flow-on-canvas"
+                                                style="color:white;position:absolute;top:80px;left:25px;font-size:larger">
+                                            </div>
+                                            <div id="show-divergence-on-canvas"
+                                                style="color:white;position:absolute;top:80px;left:750px;font-size:larger">
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </td>		
+                        </td>
                     </tr>
                 </div>
                 <!-- ======================= Curl =========================     -->
                 <div class="curl-funct">
                     <tr>
                         <td class="cMain_td" style="width:1000px;">
-                            
-                            
+
+
                             <table>
                                 <tbody>
                                     <tr>
                                         <td class="cSub_td cParameter" style="width:1000px;">
-                                            <b>Enter Vector Field</b><br><i>multiplication (e.g. xy) should be explicitly typed with sign <b>(e.g. x*y)</b></i>
+                                            <b>Enter Vector Field</b><br><i>multiplication (e.g. xy) should be
+                                                explicitly typed with sign <b>(e.g. x*y)</b></i>
                                             <div>
-                                                <b>F</b> = 
+                                                <b>F</b> =
                                                 <input id="fld-i-comp2" class="cons-input" type="text"><b>i</b> +
                                                 <input id="fld-j-comp2" class="cons-input" type="text"><b>j</b> +
                                                 <input id="fld-k-comp2" class="cons-input" type="text"><b>k</b>
 
-                                                
-                                            </div>
-                                            <input class="cons-input-submit" type="submit" onclick="setVectorField2()" value="Set">
 
-                                        </td>                  
+                                            </div>
+                                            <input class="cons-input-submit" type="submit" onclick="setVectorField2()"
+                                                value="Set">
+
+                                        </td>
                                     </tr>
                                     <tr class="second-row">
                                         <td class="cSub_td cParameter" style="width:1000px;">
                                             <b>Specify a point</b>
 
                                             <div>
-                                            x = <input id="curl-inp-x" class="cons-input" type="number" step=0.1>,
-                                            y= <input id="curl-inp-y" class="cons-input" type="number" step=0.1>,
-                                            z=<input id="curl-inp-z" class="cons-input" type="number" step=0.1>
+                                                x = <input id="curl-inp-x" class="cons-input" type="number" step=0.1>,
+                                                y= <input id="curl-inp-y" class="cons-input" type="number" step=0.1>,
+                                                z=<input id="curl-inp-z" class="cons-input" type="number" step=0.1>
                                             </div>
 
                                             <div>
-                                                &Delta;l = <input id="len-size" class="cons-input" type="number" step=0.1>
+                                                &Delta;l = <input id="len-size" class="cons-input" type="number"
+                                                    step=0.1>
                                             </div>
 
                                             <div>
                                                 <b>Plane parallel to :</b>
-                                                <input type="radio" id="plane_xy" name="initial_plane" onclick="planePlaneSet()" checked> xy plane
-                                                <input type="radio" id="plane_yz" name="initial_plane" onclick="planePlaneSet()" > yz plane
-                                                <input type="radio" id="plane_zx" name="initial_plane" onclick="planePlaneSet()" > zx plane
+                                                <input type="radio" id="plane_xy" name="initial_plane"
+                                                    onclick="planePlaneSet()" checked> xy plane
+                                                <input type="radio" id="plane_yz" name="initial_plane"
+                                                    onclick="planePlaneSet()"> yz plane
+                                                <input type="radio" id="plane_zx" name="initial_plane"
+                                                    onclick="planePlaneSet()"> zx plane
                                             </div>
 
                                             <div>
-                                                <input type="submit" onclick="showCurlPlane()"  value="Show">
-                                                <input type="submit" onclick="clearCurlPlane()"  value="Clear">
-                                            
+                                                <input type="submit" onclick="showCurlPlane()" value="Show">
+                                                <input type="submit" onclick="clearCurlPlane()" value="Clear">
+
                                             </div>
 
                                             <div class="slidecontainer" name="xy-rotation-button">
                                                 Rotate Plane about: <br>
-                                                x-axis <input id = "curl_rotationaboutxy_x" type="range" min="0" max="360" class="slider" onclick="rotateAboutX( 'curl_rotationaboutxy_x')" value="x axis"> <br>
-                                                y-axis <input id = "curl_rotationaboutxy_y" type="range" min="0" max="360" class="slider" onclick="rotateAboutY('curl_rotationaboutxy_y')" value="y axis">
-                                                
-                                                
+                                                x-axis <input id="curl_rotationaboutxy_x" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutX( 'curl_rotationaboutxy_x')"
+                                                    value="x axis"> <br>
+                                                y-axis <input id="curl_rotationaboutxy_y" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutY('curl_rotationaboutxy_y')"
+                                                    value="y axis">
+
+
                                                 <span style="margin-left: 13%; margin-right: 67%; ">0</span>
                                                 <span>2&Pi;</span>
-                                                    
+
                                             </div>
-                                            <div class="slidecontainer" name="yz-rotation-button" style="display: none;">
+                                            <div class="slidecontainer" name="yz-rotation-button"
+                                                style="display: none;">
                                                 Rotate Plane about: <br>
-                                                y-axis <input  id = "curl_rotationaboutyz_y" type="range" min="0" max="360" class="slider" onclick="rotateAboutY('curl_rotationaboutyz_y')" value="y axis"> <br>
-                                                z-axis <input  id = "curl_rotationaboutyz_z" type="range" min="0" max="360" class="slider" onclick="rotateAboutZ('curl_rotationaboutyz_z')" value="z axis">
-                                                
+                                                y-axis <input id="curl_rotationaboutyz_y" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutY('curl_rotationaboutyz_y')"
+                                                    value="y axis"> <br>
+                                                z-axis <input id="curl_rotationaboutyz_z" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutZ('curl_rotationaboutyz_z')"
+                                                    value="z axis">
+
                                                 <span style="margin-left: 13%; margin-right: 67%; ">0</span>
                                                 <span>2&Pi;</span>
-                                                
+
                                             </div>
 
 
-                                            <div class="slidecontainer" name="zx-rotation-button" style="display: none;">
+                                            <div class="slidecontainer" name="zx-rotation-button"
+                                                style="display: none;">
                                                 Rotate Plane about: <br>
-                                                z-axis <input id = "curl_rotationaboutxz_z" type="range" min="0" max="360" class="slider" onclick="rotateAboutZ('curl_rotationaboutxz_z')" value="z axis"> <br>
-                                                x-axis <input id = "curl_rotationaboutxz_x" type="range" min="0" max="360" class="slider" onclick="rotateAboutX('curl_rotationaboutxz_x')" value="x axis">
-                                               
+                                                z-axis <input id="curl_rotationaboutxz_z" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutZ('curl_rotationaboutxz_z')"
+                                                    value="z axis"> <br>
+                                                x-axis <input id="curl_rotationaboutxz_x" type="range" min="0" max="360"
+                                                    class="slider" onclick="rotateAboutX('curl_rotationaboutxz_x')"
+                                                    value="x axis">
+
                                                 <span style="margin-left: 13%; margin-right: 67%; ">0</span>
                                                 <span>2&Pi;</span>
                                             </div>
 
 
-                                            <input type="submit" onclick="calculateCurl(); stopRotating()"  value="Calculate">
+                                            <input type="submit" onclick="calculateCurl(); stopRotating()"
+                                                value="Calculate">
 
 
                                             <div>
-                                                <i>Circulation around plane =</i><input id ="show-circulation"readonly style="margin-bottom: 7px;"><br>
-                                                <i>Circulation around plane / </i> &Delta; <i>s =</i><input id ="show-circulation-by-delta-s"readonly style="margin-bottom: 7px;"><br>
+                                                <i>Circulation around plane =</i><input id="show-circulation" readonly
+                                                    style="margin-bottom: 7px;"><br>
+                                                <i>Circulation around plane / </i> &Delta; <i>s =</i><input
+                                                    id="show-circulation-by-delta-s" readonly
+                                                    style="margin-bottom: 7px;"><br>
                                                 <i>Curl = </i><input id="show-curl" readonly>
                                             </div>
                                         </td>
                                     </tr>
-                                    
+
                                 </tbody>
                             </table>
-                        </td>		
+                        </td>
                     </tr>
-                </div>    
+                </div>
             </div>
         </div>
         <div style="height:30px"></div>
         <div style="height:2px; background:#dc772f"></div>
         <div style="height:30px"></div>
-    </body>
+</body>
+
 </html>
