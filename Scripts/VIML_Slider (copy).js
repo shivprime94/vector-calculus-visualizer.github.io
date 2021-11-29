@@ -18,15 +18,15 @@ function VIML_Slider() {
         var e = document.createElement("TABLE");
         l.appendChild(e);
         e.style.borderStyle = f;
-        e.style.width = "100%";     // this one============================
+        e.style.width = "100%";
         var n = e.insertRow(0);
         n.style.border = 0;
         var c = n.insertCell(0);
         c.style.borderStyle = f;
         c.vAlign = "top";
-        c.style.width = this.defInputBoxWidth;     //shifts slider to the right
+        c.style.width = this.defInputBoxWidth;
         this.priMinWidget.style.width = this.defInputBoxWidth;
-        // c.appendChild(this.priMinWidget);
+        c.appendChild(this.priMinWidget);
         var a = n.insertCell(1);
         a.style.borderStyle = f;
         a.vAlign = "top";
@@ -36,16 +36,8 @@ function VIML_Slider() {
         this.priSliderCanvas.height = this.defSliderHeight;
         a.appendChild(this.priSliderCanvas);
         var m = document.createElement("DIV");
-        if(Math.round((window.devicePixelRatio * 100) ==100)){
-            remainingWidth = this.priSliderCanvas.width - this.defSliderSpacing[0] - this.defSliderSpacing[1];
-        }
-        else{
-            remainingWidth = window.innerWidth-800;
-        }
         m.style.width = (
-            remainingWidth = this.priSliderCanvas.width - this.defSliderSpacing[0] - this.defSliderSpacing[1]
-            // remainingWidth
-            // 700 // changes slider width
+            this.priSliderCanvas.width - this.defSliderSpacing[0] - this.defSliderSpacing[1]
         ) + "px";
         m.id = p + "-SLIDER_REGION";
         a.appendChild(m);
@@ -77,7 +69,7 @@ function VIML_Slider() {
         q.vAlign = "top";
         q.style.width = this.defInputBoxWidth;
         this.priMaxWidget.style.width = this.defInputBoxWidth;
-        // q.appendChild(this.priMaxWidget);
+        q.appendChild(this.priMaxWidget);
         this.priMaxWidget.onchange = function () {
             g.setRange(g.priMinWidget.value, g.priMaxWidget.value)
         };
@@ -229,8 +221,7 @@ function VIML_Slider() {
         var b = this
             .priSliderCanvas
             .getContext("2d");
-        // b.font = this.defTickFontSize + "px Arial";             //font size of ticks
-        b.font = 15 + "px Arial";
+        b.font = this.defTickFontSize + "px Arial";
         b.clearRect(0, 0, this.priSliderCanvas.width, this.priSliderCanvas.height);
         var e = this
                 .priSlider

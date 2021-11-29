@@ -22,8 +22,7 @@
     border: 1px solid RoyalBlue;
     margin-bottom: 5px;
 }
-/* changes width of slider background */
-.cBoxSlider {               
+.cBoxSlider {
     width: 330px;
     height: 20px;
     margin-top: 3px;
@@ -76,10 +75,14 @@ ul {
 }
 
 .cons-input-mode{
+
+
   width: 150px;
   margin-top: 10px;
   color: white;
   background-color: black;
+  margin-left: 25px;
+  margin-bottom: 10px;
   
 }
 
@@ -106,3 +109,5 @@ scene.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({
     color: 0x0000ff
 })));
  */
+
+ 

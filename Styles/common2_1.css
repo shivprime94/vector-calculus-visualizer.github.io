@@ -1,0 +1,111 @@
+body{
+  font-size: 14.5px;
+}
+
+.check{
+  height:30px;
+  background-color:green;
+}
+
+.col-lg-7-5{
+  position: relative;
+  width: 62.5%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-lg-4-5{
+  position: relative;
+  width: 37.5%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.inline{
+  display: inline-flex;
+}
+
+.whiteBg{
+  background-color: white;
+  width: 170px;
+  padding-left: 10px;
+  height: 22px;
+}
+
+.addMargintext{
+  margin-top: 10px;
+}
+
+.addMarginBlock{
+  margin-top: 23px;
+  margin-bottom: 14px;
+}
+
+
+.cons-input{
+  width: 100px;
+  height: 24px;
+  margin: 4px;
+}
+
+.cons-input-submit{
+  width: 100px;
+  margin-left: 26px;
+  margin-top: 4px;
+  height: 24px;
+  margin-bottom: 12px;
+}
+
+.cons-input-remove{
+  width: 100px;
+  
+}
+
+.ui-slider-range{
+  /* background: sienna; */
+  background: linear-gradient(45deg,#c2d60a,black);
+}
+
+video {
+  --width: calc(45%);
+  width: var(--width);
+  height: calc(var(--width) * 0.75);
+  margin: 1em;
+  object-fit: cover;
+}
+
+.col-lg-4{
+  display: inline-flex;
+    width: 130px;
+}
+
+.show-surface{
+  margin-right: -4px;
+}
+
+.col2{
+  display: inline-flex;
+    margin-right: -420px;
+}
+
+.col-lg-2{
+  display: inline-flex;
+  margin-left: 20px;
+}
+
+.col-lg-5{
+  width: 650px;
+}
+
+.input-field{
+  display: inline-flex;
+}
+
+.addMarginBlock{
+  display: inline-flex;
+  margin-left: 30px;
+}
+
+i{
+  
+}
