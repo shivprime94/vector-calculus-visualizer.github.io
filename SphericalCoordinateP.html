@@ -1,0 +1,1962 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Spherical Coordinate System</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <link rel="stylesheet" type="text/css" href="./external/jsx/jsxgraph.css">
+    <link rel="stylesheet" href="Styles/pages.css">
+    <script type="text/javascript" src="./external/jsx/jsxgraphcore.js"></script>
+    <link type="text/css" href="./external/jqueryui/css/ui-lightness/jquery-ui-1.8.22.custom.css" rel="stylesheet">
+    <script type="text/javascript" src="./external/jqueryui/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="./external/jqueryui/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="./external/Complex/Complex.js"></script>
+    <script type="text/javascript" src="./Scripts/matrix.js"></script>
+    <script type="text/javascript" src="./Scripts/camera.js"></script>
+    <script type="text/javascript" src="./Scripts/Board3D.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="./Styles/common.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/common2.css">
+
+    <!--- Define the format of box --->
+    <style type="text/css">
+        /**************** Graph Box  ****************/
+        .cBoxGraph {
+            width: 500px;
+            height: 500px;
+        }
+
+        /**************** ToolBar Box  ****************/
+        .cBoxPara {
+            width: 500px;
+            height: 500px;
+        }
+
+        .cBoxSlider {
+            width: 500px;
+            height: 90px;
+        }
+
+        .cBoxSli {
+            width: 500px;
+            height: 250px;
+        }
+    </style>
+
+    <!-- ======================= Shader =======================-->
+    <script type="text/javascript" src="./external/three.min.js"></script>
+    <script type="text/javascript" src="./external/TrackballControls.js"></script>
+    <script type="text/javascript" src="./external/OrbitControls.js"></script>
+    <script type="text/javascript" src="./external/Projector.js"></script>
+    <script type="text/javascript" src="./external/CanvasRenderer.js"></script>
+    <script type="text/javascript" src="./Scripts/common.js"></script>
+    <script type="text/javascript" src="./Scripts/VIML_Slider.js"></script>
+    <script type="text/javascript" src="./external/ConvexHull.js"></script>
+    <script type="text/javascript" src="./external/ConvexGeometry.js"></script>
+    <script type="text/javascript" src="external/jsonTxt.js"></script>
+
+    <!-- <script src="Scripts/Mukta_Bold.json"></script> -->
+
+    <script>
+
+        // jQuerUI Setting
+        var remainingWidth = -1;
+        $(function () {
+            $("input").click(function () {
+                if ($(this)[0].type == "text")
+                    $(this).select();
+            });
+
+            $("#ulGraphs").sortable();
+            $("#ulGraphs").disableSelection();
+
+
+            webGLStart();
+        }
+        );
+        // Constants
+        var myHalfPI = 0.5 * Math.PI;
+        var deg2rad = Math.PI / 180.0;
+
+        // variables
+        var vR_factor = 100; // coordinates ( 0< R < 1 ) --> scene ratio
+        var vR = vR_factor * 0.3; // spherical coordinate R
+        var vTheta = 0.5 * Math.PI; // spherical coordinate Theta (radians)
+        var vPhi = 0.5 * Math.PI; // spherical coordinate Phi (radians)
+
+        var vPtVector3 = new THREE.Vector3(0, 0, 0);  // Cartesian coordinates of obvervation point
+        var SEPARATION = 200, AMOUNTX = 10, AMOUNTY = 10;
+        var camera, scene, renderer, controls;
+
+
+        // Scence children
+        var obvPoint_scene, constR_scene, constTheta_scene, constPhi_scene;
+        var unit_phi_vector, unit_R_vector, unit_Theta_vector;
+        var mouseDown = false;
+        var lastMouseX = null;
+        var lastMouseY = null;
+        var volumeSphere, volumeCylinder;
+        var volumeSphereShow = false;
+        var volumeCylinderShow = false;
+
+        // Volume Sphere
+
+        function drawVolumeSpherical() {
+            var rFrom = document.getElementById("cons-spherical-from-r").value;
+            var rTo = document.getElementById("cons-spherical-to-r").value;
+            var thetaFrom = document.getElementById("cons-spherical-from-theta").value;
+            var thetaTo = document.getElementById("cons-spherical-to-theta").value;
+            var phiFrom = document.getElementById("cons-spherical-from-phi").value;
+            var phiTo = document.getElementById("cons-spherical-to-phi").value;
+
+            var r;
+
+            if (thetaFrom == "" || thetaTo == "" || phiFrom == "" || phiTo == "") {
+                alert("invalid input");
+                removeVolumeSpherical();
+                return;
+            }
+            // if(thetaFrom > 90 || thetaFrom<0 || thetaTo > 90 || thetaTo<0 || phiFrom > 90 || phiFrom<0 || phiTo > 90 || phiTo < 0){
+            //     alert("all angle must be in [0,90]");
+            //     removeVolumeSpherical();
+            // }
+
+
+            thetaFrom *= deg2rad;
+            thetaTo *= deg2rad;
+            phiFrom *= deg2rad;
+            phiTo *= deg2rad;
+
+
+            if (rFrom == "" ^ rTo == "") {
+                if (rFrom == "") {
+                    r = rTo;
+                }
+                else {
+                    r = rFrom;
+                }
+                // console.log(r);
+                var geometry = new THREE.SphereGeometry(r * vR_factor, 60, 60, phiFrom + Math.PI / 2, (phiTo - phiFrom), thetaFrom, (thetaTo - thetaFrom));
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xffff00,
+                    opacity: 0.8,
+                    transparent: true,
+                });
+                material.side = THREE.DoubleSide;
+                volumeSphere = new THREE.Mesh(geometry, material);
+                scene.add(volumeSphere);
+
+
+            }
+            else if (rFrom == "" && rTo == "") {
+                removeVolumeSpherical();
+                alert("invalid input\nr must be defined");
+                return;
+            }
+            else {
+
+                rFrom *= vR_factor;
+                rTo *= vR_factor;
+
+                var geometryNear = new THREE.SphereGeometry(rFrom, 40, 40, phiFrom + Math.PI / 2, (phiTo - phiFrom), thetaFrom, (thetaTo - thetaFrom));
+                var geometryFar = new THREE.SphereGeometry(rTo, 40, 40, phiFrom + Math.PI / 2, (phiTo - phiFrom), thetaFrom, (thetaTo - thetaFrom));
+                var modelGeometry = new THREE.Geometry();
+                modelGeometry.merge(geometryNear);
+                modelGeometry.merge(geometryFar);
+
+                var bufGeometry = new THREE.BufferGeometry().fromGeometry(modelGeometry);
+
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xffff00,
+                    opacity: 0.8,
+                    transparent: true,
+                });
+                material.side = THREE.DoubleSide;
+
+                volumeSphere = new THREE.Group();
+                volumeSphere.add(new THREE.Mesh(bufGeometry, material));
+                // scene.add(volumeSphere);
+
+                // filling Geometry for sphere
+
+                var fillingGeometry = new THREE.Geometry();
+                var dTheta;
+                if (thetaFrom < thetaTo) {
+                    dTheta = 2 * Math.PI / 180;
+                }
+                else {
+                    dTheta = -2 * Math.PI / 180;
+                }
+
+                var lastFar, lastNear, currentFar, currentNear, point_count = -1;
+                var fillingLine, stLine, farLine, nearLine;
+
+                fillingLine = new THREE.Group();
+
+
+                var lineMaterial = new THREE.LineBasicMaterial({
+                    color: 0x808080,
+                    linewidth: 1,
+                });
+
+                //on side -> upper (a)
+                lastNear = spherical_to_Cartesian(rFrom, thetaFrom, phiFrom);
+                point_count++;
+                lastFar = spherical_to_Cartesian(rTo, thetaFrom, phiFrom);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var phi = phiFrom + dTheta; phi <= phiTo; phi += dTheta) {
+                    currentNear = spherical_to_Cartesian(rFrom, thetaFrom, phi);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = spherical_to_Cartesian(rTo, thetaFrom, phi);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = spherical_to_Cartesian(rFrom, thetaFrom, phiTo);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = spherical_to_Cartesian(rTo, thetaFrom, phiTo);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+                // scene.add(fillingLine);
+
+                //on side -> right (b)
+                lastNear = spherical_to_Cartesian(rFrom, thetaFrom, phiTo);
+                point_count++;
+                lastFar = spherical_to_Cartesian(rTo, thetaFrom, phiTo);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var theta = thetaFrom + dTheta; theta <= thetaTo; theta += dTheta) {
+                    currentNear = spherical_to_Cartesian(rFrom, theta, phiTo);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = spherical_to_Cartesian(rTo, theta, phiTo);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = spherical_to_Cartesian(rFrom, thetaTo, phiTo);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = spherical_to_Cartesian(rTo, thetaTo, phiTo);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+                // scene.add(fillingLine);
+
+                //on side -> lower (c)
+                lastNear = spherical_to_Cartesian(rFrom, thetaTo, phiTo);
+                point_count++;
+                lastFar = spherical_to_Cartesian(rTo, thetaTo, phiTo);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var phi = phiTo - dTheta; phi >= phiFrom; phi -= dTheta) {
+                    currentNear = spherical_to_Cartesian(rFrom, thetaTo, phi);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = spherical_to_Cartesian(rTo, thetaTo, phi);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = spherical_to_Cartesian(rFrom, thetaTo, phiFrom);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = spherical_to_Cartesian(rTo, thetaTo, phiFrom);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+
+                // on side -> left (d)
+
+                lastNear = spherical_to_Cartesian(rFrom, thetaTo, phiFrom);
+                point_count++;
+                lastFar = spherical_to_Cartesian(rTo, thetaTo, phiFrom);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var theta = thetaTo - dTheta; theta >= thetaFrom; theta -= dTheta) {
+                    currentNear = spherical_to_Cartesian(rFrom, theta, phiFrom);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = spherical_to_Cartesian(rTo, theta, phiFrom);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = spherical_to_Cartesian(rFrom, thetaFrom, phiFrom);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = spherical_to_Cartesian(rTo, thetaFrom, phiFrom);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+                // scene.add(fillingLine);
+
+                fillingGeometry.computeFaceNormals();
+                fillingGeometry.computeVertexNormals();
+
+
+
+                volumeSphere.add(new THREE.Mesh(fillingGeometry, material));
+                volumeSphere.add(fillingLine);
+                scene.add(volumeSphere);
+
+            }
+
+
+        }
+
+        function spherical_to_Cartesian(r, theta, phi) {
+            var x = round_up_two_decimal(r * Math.sin(theta) * Math.cos(phi));
+            var y = round_up_two_decimal(r * Math.sin(theta) * Math.sin(phi));
+            var z = round_up_two_decimal(r * Math.cos(theta));
+            return (new THREE.Vector3(y, z, x));
+
+        }
+
+
+        // function addVolumeSpherical(){
+        //     volumeSphereShow=true;
+        // }
+        // function removeVolumeSpherical(){
+        //     volumeSphereShow=false;
+        //     scene.remove(volumeSphere);
+        // }
+
+
+        //draw volume cylinder
+
+        function drawVolumeCylinder() {
+            var rhoFrom = document.getElementById("cons-cylinder-from-rho").value;
+            var rhoTo = document.getElementById("cons-cylinder-to-rho").value;
+            var phiFrom = document.getElementById("cons-cylinder-from-phi").value;
+            var phiTo = document.getElementById("cons-cylinder-to-phi").value;
+            var zFrom = document.getElementById("cons-cylinder-from-z").value;
+            var zTo = document.getElementById("cons-cylinder-to-z").value;
+
+            var rho;
+
+            if (phiFrom == "" || phiTo == "" || zFrom == "" || zTo == "") {
+                alert("invalid input");
+                removeVolumeCylinder();
+                return;
+            }
+
+            // if(phiFrom > 90 || phiFrom<0 || phiTo > 90 || phiTo < 0){
+            //     alert("all angle must be in [0,90]");
+            //     removeVolumeSpherical();
+            // }
+
+
+            phiFrom *= deg2rad;
+            phiTo *= deg2rad;
+
+
+            if (rhoFrom == "" ^ rhoTo == "") {
+                if (rhoFrom == "") {
+                    rho = rhoTo;
+                }
+                else {
+                    rho = rhoFrom;
+                }
+
+                rho = parseFloat(rho) * vR_factor;
+                zFrom = parseFloat(zFrom) * vR_factor;
+                zTo = parseFloat(zTo) * vR_factor;
+                var geometry = new THREE.CylinderGeometry(rho, rho, (zTo - zFrom), 50, 50, true, phiFrom, (phiTo - phiFrom));
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0x70cc27,
+                    opacity: 0.8,
+                    transparent: true,
+                });
+                material.side = THREE.DoubleSide;
+                volumeCylinder = new THREE.Mesh(geometry, material);
+
+                volumeCylinder.position.set(0, ((zTo + zFrom) / 2), 0)
+                scene.add(volumeCylinder);
+
+            }
+            else if (rhoFrom == "" && rhoTo == "") {
+                removeVolumeSpherical();
+                alert("invalid input\nrho must be defined");
+            }
+            else {
+
+                rhoFrom *= vR_factor;
+                rhoTo *= vR_factor;
+                zFrom *= vR_factor;
+                zTo *= vR_factor;
+
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0x70cc27,
+                    opacity: 0.8,
+                    transparent: true,
+                });
+                material.side = THREE.DoubleSide;
+
+                var geometryNear = new THREE.CylinderGeometry(rhoFrom, rhoFrom, (zTo - zFrom), 50, 50, true, phiFrom, (phiTo - phiFrom));
+
+                var geometryFar = new THREE.CylinderGeometry(rhoTo, rhoTo, (zTo - zFrom), 50, 50, true, phiFrom, (phiTo - phiFrom));
+
+                var modelGeometry = new THREE.Geometry();
+                modelGeometry.merge(geometryNear);
+                modelGeometry.merge(geometryFar);
+
+
+
+
+                ///////filling geometry
+
+
+
+                var fillingGeometry = new THREE.Geometry();
+                var dTheta, dz;
+                if (phiFrom < phiTo) {
+                    dTheta = 2 * Math.PI / 180;
+                }
+                else {
+                    dTheta = -2 * Math.PI / 180;
+                }
+
+
+                var lastFar, lastNear, currentFar, currentNear, point_count = -1, shift = 0;
+
+                var lastFar, lastNear, currentFar, currentNear, point_count = -1;
+                var fillingLine, stLine, farLine, nearLine;
+
+                fillingLine = new THREE.Group();
+
+
+                var lineMaterial = new THREE.LineBasicMaterial({
+                    color: 0x808080,
+                    linewidth: 1,
+                });
+
+                //on side -> upper (a)
+                lastNear = cylindrical_to_Cartesian(rhoFrom, phiFrom, zTo, shift);
+                point_count++;
+                lastFar = cylindrical_to_Cartesian(rhoTo, phiFrom, zTo, shift);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var phi = phiFrom + dTheta; phi <= phiTo; phi += dTheta) {
+                    currentNear = cylindrical_to_Cartesian(rhoFrom, phi, zTo, shift);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = cylindrical_to_Cartesian(rhoTo, phi, zTo, shift);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = cylindrical_to_Cartesian(rhoFrom, phiTo, zTo, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = cylindrical_to_Cartesian(rhoTo, phiTo, zTo, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+                //on side -> right (b)
+                lastNear = cylindrical_to_Cartesian(rhoFrom, phiTo, zTo, shift);
+                point_count++;
+                lastFar = cylindrical_to_Cartesian(rhoTo, phiTo, zTo, shift);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+
+                currentNear = cylindrical_to_Cartesian(rhoFrom, phiTo, zFrom, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = cylindrical_to_Cartesian(rhoTo, phiTo, zFrom, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+
+
+                //on side -> lower (c)
+                lastNear = cylindrical_to_Cartesian(rhoFrom, phiTo, zFrom, shift);
+                point_count++;
+                lastFar = cylindrical_to_Cartesian(rhoTo, phiTo, zFrom, shift);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+                for (var phi = phiTo - dTheta; phi >= phiFrom; phi -= dTheta) {
+                    currentNear = cylindrical_to_Cartesian(rhoFrom, phi, zFrom, shift);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentNear);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                    currentFar = cylindrical_to_Cartesian(rhoTo, phi, zFrom, shift);
+                    point_count++;
+                    fillingGeometry.vertices.push(currentFar);
+                    fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+
+                    lastNear = currentNear;
+                    lastFar = currentFar;
+
+                    nearLine.vertices.push(currentNear);
+                    farLine.vertices.push(currentFar);
+
+                }
+                currentNear = cylindrical_to_Cartesian(rhoFrom, phiFrom, zFrom, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = cylindrical_to_Cartesian(rhoTo, phiFrom, zFrom, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+
+                // on side -> left (d)
+
+                lastNear = cylindrical_to_Cartesian(rhoFrom, phiFrom, zFrom, shift);
+                point_count++;
+                lastFar = cylindrical_to_Cartesian(rhoTo, phiFrom, zFrom, shift);
+                point_count++;
+
+                fillingGeometry.vertices.push(lastNear);
+                fillingGeometry.vertices.push(lastFar);
+
+                stLine = new THREE.Geometry();
+                farLine = new THREE.Geometry();
+                nearLine = new THREE.Geometry();
+
+                stLine.vertices.push(lastNear);
+                stLine.vertices.push(lastFar);
+
+                nearLine.vertices.push(lastNear);
+                farLine.vertices.push(lastFar);
+
+
+                currentNear = cylindrical_to_Cartesian(rhoFrom, phiFrom, zTo, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentNear);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 2, point_count - 1, point_count));
+
+                currentFar = cylindrical_to_Cartesian(rhoTo, phiFrom, zTo, shift);
+                point_count++;
+                fillingGeometry.vertices.push(currentFar);
+                fillingGeometry.faces.push(new THREE.Face3(point_count - 1, point_count - 2, point_count));
+
+                nearLine.vertices.push(currentNear);
+                farLine.vertices.push(currentFar);
+
+                stLine = new THREE.Line(stLine, lineMaterial);
+                nearLine = new THREE.Line(nearLine, lineMaterial);
+                farLine = new THREE.Line(farLine, lineMaterial);
+                fillingLine.add(stLine);
+                fillingLine.add(nearLine);
+                fillingLine.add(farLine);
+
+                fillingGeometry.computeFaceNormals();
+                fillingGeometry.computeVertexNormals();
+                // scene.add( new THREE.Mesh(fillingGeometry,material));
+
+                // modelGeometry.merge(fillingGeometry);
+
+                var bufGeometry = new THREE.BufferGeometry().fromGeometry(modelGeometry);
+
+                var cylinderCurve = new THREE.Mesh(bufGeometry, material);
+                cylinderCurve.position.set(0, (zTo + zFrom) / 2, 0);
+                var cylinderFlat = new THREE.Mesh(fillingGeometry, material);
+                volumeCylinder = new THREE.Group();
+
+                volumeCylinder.add(cylinderCurve);
+                volumeCylinder.add(cylinderFlat);
+                volumeCylinder.add(fillingLine);
+                // volumeCylinder.position.set(0,(zTo+zFrom)/2,0);
+                scene.add(volumeCylinder);
+
+            }
+
+        }
+
+        function cylindrical_to_Cartesian(r, phi, z, shift) {
+            var x = round_up_two_decimal(r * Math.cos(phi));
+            var y = round_up_two_decimal(r * Math.sin(phi));
+            var z = round_up_two_decimal(z - shift);
+            return (new THREE.Vector3(y, z, x));
+        }
+
+        // function addVolumeCylinder(){
+        //     volumeCylinderShow = true;
+        // }
+        // function removeVolumeCylinder(){
+        //     volumeCylinderShow = false;
+        //     scene.remove(volumeCylinder);
+        // }
+
+
+
+        // Set UI value of R
+        function SetUIValue_vR(vValue) {
+            if (!isNaN(vValue)) {
+                vR = vR_factor * vValue;
+                P1_vimlslider_R.setValueNE(vValue);
+            }
+        }
+
+        // Set UI value of Theta
+        function SetUIValue_vTheta(vValue) {
+            if (!isNaN(vValue)) {
+                vTheta = vValue;
+                P1_vimlslider_Theta.setValueNE(vValue);
+            }
+        }
+
+        // Set UI value of Phi
+        function SetUIValue_vPhi(vValue) {
+            if (!isNaN(vValue)) {
+                vPhi = vValue;
+                P1_vimlslider_Phi.setValueNE(vValue);
+            }
+        }
+
+        // When the checkbox of Constant R is clicked...
+        function ConstR_check() {
+            // document.getElementById("fixed_R").checked = !document.getElementById("fixed_R").checked;
+
+            if (document.getElementById("fixed_R").checked) { scene.add(constR_scene); }
+            else { scene.remove(constR_scene); }
+        }
+
+        // When the checkbox of Constant Theta is clicked...
+        function ConstTheta_check() {
+            // document.getElementById("fixed_Theta").checked = !document.getElementById("fixed_Theta").checked;
+
+            if (document.getElementById("fixed_Theta").checked) {
+                scene.add(constTheta_scene);
+                // console.log("cone added");
+            }
+            else { scene.remove(constTheta_scene); }
+        }
+
+        // When the checkbox of Constant Phi is clicked...
+        function ConstPhi_check() {
+            // document.getElementById("fixed_Phi").checkd = !document.getElementById("fixed_Phi").checkd;
+            if (document.getElementById("fixed_Phi").checked) { scene.add(constPhi_scene); }
+            else { scene.remove(constPhi_scene); }
+        }
+        function Unit_vector_phi_check() {
+
+            if (document.getElementById("aPhi").checked) { scene.add(unit_phi_vector); }
+            else { scene.remove(unit_phi_vector); }
+        }
+        function Unit_vector_R_check() {
+
+            if (document.getElementById("aR").checked) { scene.add(unit_R_vector); }
+            else { scene.remove(unit_R_vector); }
+        };
+
+        function Unit_vector_Theta_check() {
+
+            if (document.getElementById("aTheta").checked) { scene.add(unit_Theta_vector); }
+            else { scene.remove(unit_Theta_vector); }
+        };
+
+        //if observation point add/remove
+
+        function observationPointCheck() {
+
+            if (document.getElementById('aObservationPoint').checked) {
+                scene.add(obvPoint_scene);
+            }
+            else {
+                scene.remove(obvPoint_scene);
+            }
+        }
+
+
+        // Update the coordinates of obvervaion points
+        function UpdatePoint() {
+            vRho = vR * Math.sin(vTheta);
+            // **********為了呈現出z軸朝上************
+            vPtVector3.z = vRho * Math.cos(vPhi);     //將原來x座標變成z軸座標
+            vPtVector3.x = vRho * Math.sin(vPhi);     //將原來y座標變成x軸座標
+            vPtVector3.y = vR * Math.cos(vTheta);     //將原來z座標變成y軸座標
+
+        }
+
+        //Theta以Degree呈現
+        function Deg1() {
+
+            document.getElementById("vimlsli_Theta").innerHTML = "";
+            // document.getElementById("rad1").checked == false;
+            var P1_vimlslider_Theta = new VIML_Slider();
+
+            P1_vimlslider_Theta.defSliderWidth = 350;
+            P1_vimlslider_Theta.createUI('vimlsli_Theta', "<i>&theta;</i> = ", "deg", 3, [0, Infinity, 0.001]);
+            P1_vimlslider_Theta.disableMax();
+            P1_vimlslider_Theta.disableMin();
+            P1_vimlslider_Theta.setRange(0, 180);
+            SetUIValue_vTheta(Math.PI / 3);
+            P1_vimlslider_Theta.setValueNE(vTheta * 180 / Math.PI);
+
+
+            P1_vimlslider_Theta.setTick([[0, "0"], [90, "90"], [180, "180"], [270, "270"], [360, "360"]]);
+            P1_vimlslider_Theta.onChange = function (vValue) {
+                vTheta = vValue * Math.PI / 180;
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+            };
+
+            UpdatePoint();
+            show_Cartesian();
+            show_Cylindrical();
+            show_Spherical();
+        }
+
+
+        //Theta以rad呈現
+        function Rad1() {
+            document.getElementById("vimlsli_Theta").innerHTML = "";
+            var P1_vimlslider_Theta = new VIML_Slider();
+            // document.getElementById("deg1").checked = false;
+            P1_vimlslider_Theta.defSliderWidth = 350;
+            P1_vimlslider_Theta.createUI('vimlsli_Theta', "<i>&theta;</i> = ", "rad", 4, [-180, Infinity, 0.001]);
+            P1_vimlslider_Theta.disableMax();
+            P1_vimlslider_Theta.disableMin();
+            P1_vimlslider_Theta.setRange(0, Math.PI);
+            SetUIValue_vTheta(Math.PI / 3);
+            P1_vimlslider_Theta.setValueNE(vTheta);
+
+            P1_vimlslider_Theta.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI , "π"], [3*Math.PI / 2, "3π/2"], [2*Math.PI, "2π"]]);
+            P1_vimlslider_Theta.onChange = function (vValue) {
+                vTheta = vValue;
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+            };
+            UpdatePoint();
+            show_Cartesian();
+            show_Cylindrical();
+            show_Spherical();
+        }
+
+        //Phi以Degree呈現
+        function Deg2() {
+            document.getElementById("vimlsli_Phi").innerHTML = "";
+            var P1_vimlslider_Phi = new VIML_Slider();
+
+            // document.getElementById("rad2").checked = true;
+            P1_vimlslider_Phi.defSliderWidth = 350;
+            P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", "deg", 3, [0, Infinity, 0.001]);
+            P1_vimlslider_Phi.disableMax();
+            P1_vimlslider_Phi.disableMin();
+            P1_vimlslider_Phi.setRange(0, 360);
+            SetUIValue_vPhi(Math.PI / 6);
+            P1_vimlslider_Phi.setValueNE(vPhi * 180 / Math.PI);
+
+            P1_vimlslider_Phi.setTick([[0, "0"], [90, "90"], [180, "180"], [270, "270"], [360, "360"]]);
+            P1_vimlslider_Phi.onChange = function (vValue) {
+                vPhi = vValue * Math.PI / 180;
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+            };
+            UpdatePoint();
+            show_Cartesian();
+            show_Cylindrical();
+            show_Spherical();
+        }
+
+        //Phi以rad呈現
+        function Rad2() {
+            document.getElementById("vimlsli_Phi").innerHTML = "";
+            var P1_vimlslider_Phi = new VIML_Slider();
+
+            // document.getElementById("deg2").checked = false;
+            P1_vimlslider_Phi.defSliderWidth = 350;
+            P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", "rad", 4, [-10, Infinity, 0.001]);
+            P1_vimlslider_Phi.disableMax();
+            P1_vimlslider_Phi.disableMin();
+            P1_vimlslider_Phi.setRange(0, 2*Math.PI);
+            SetUIValue_vPhi(Math.PI / 6);
+            P1_vimlslider_Phi.setValueNE(vPhi);
+
+            P1_vimlslider_Phi.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI , "π"], [3*Math.PI / 2, "3π/2"], [2*Math.PI, "2π"]]);
+            P1_vimlslider_Phi.onChange = function (vValue) {
+                vPhi = vValue;
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+            };
+            UpdatePoint();
+            show_Cartesian();
+            show_Cylindrical();
+            show_Spherical();
+        };
+
+
+        //checke checkbox is checked or not
+        function changeUnits() {
+            var checkbox1 = document.getElementById('rad1');
+            var checkbox2 = document.getElementById('rad2');
+            if (checkbox1.checked != true) {
+                Rad1();
+
+            } else {
+                Deg1();
+            }
+            if (checkbox2.checked != true) {
+                Rad2();
+            }
+            else {
+                Deg2();
+            }
+
+        }
+
+        //將數值取到小數點後兩位的值
+        function round_up_two_decimal(num) {
+            var temp, temp1;
+            temp = num * 100;
+            temp1 = Math.ceil(temp);
+            return temp1 / 100;
+        };
+        function show_Cartesian() {
+            var x = round_up_two_decimal(vR * Math.sin(vTheta) * Math.cos(vPhi) / vR_factor);
+            var y = round_up_two_decimal(vR * Math.sin(vTheta) * Math.sin(vPhi) / vR_factor);
+            var z = round_up_two_decimal(vR * Math.cos(vTheta) / vR_factor);
+            document.getElementById("coordinate_1").value = "(" + x + ", " + y + ", " + z + ")";
+        };
+        function show_Cylindrical() {
+
+            var r = round_up_two_decimal(vR * Math.sin(vTheta) / vR_factor);
+            var phi = round_up_two_decimal(vPhi * 180 / Math.PI)
+            var z = round_up_two_decimal(vR * Math.cos(vTheta) / vR_factor);
+            document.getElementById("coordinate_2").value = "(" + r + ", " + phi + ", " + z + ")";
+        };
+        function show_Spherical() {
+
+            var R = round_up_two_decimal(vR / vR_factor);
+            var THETA = round_up_two_decimal(vTheta * 180 / Math.PI)
+            var phi = round_up_two_decimal(vPhi * 180 / Math.PI);
+            document.getElementById("coordinate_3").value = "(" + R + ", " + THETA + ", " + phi + ")";
+        };
+
+
+
+
+
+    </script>
+
+    <script>
+        // Function to create scene of constant-R sphere
+        function constR_create() {
+
+
+            var constR_sphere = new THREE.SphereGeometry(vR, 60, 60);
+            // var constR_material = new THREE.MeshBasicMaterial( {color: 0xFFBB00} );
+            var constR_material = new THREE.MeshPhongMaterial({
+                color: 0xff3300,
+                opacity: 0.8,
+                transparent: true,
+            });
+            constR_material.side = THREE.DoubleSide;
+
+            if (vR == 0) {
+                var constR_sphere = new THREE.SphereGeometry(0.1, 32, 32);
+            };
+
+            constR_scene = new THREE.Mesh(constR_sphere, constR_material);
+            // scene.add(constR_scene);
+            // constR_scene.position.set(0, 0, 0);
+        }
+
+
+
+        // Function to create scene of constant-Theta cone
+        function constTheta_create() {
+
+            var slantHeight = 1.3 * vR_factor;
+            // var coneHeight = 1*vR_factor*Math.cos(vTheta)*1.3;
+            // var coneRadius = vR_factor * Math.sin(vTheta)*1.1;
+            var coneHeight = slantHeight * Math.cos(vTheta);
+            var coneRadius = slantHeight * Math.sin(vTheta);
+
+            var geometry = new THREE.ConeGeometry(coneRadius, coneHeight, 60, 60, true);
+            var material = new THREE.MeshPhongMaterial({
+                color: 0x4d9900,
+                opacity: 0.8,
+                transparent: true,
+            });
+            material.side = THREE.DoubleSide;
+            constTheta_scene = new THREE.Mesh(geometry, material);
+            constTheta_scene.rotation.set(myHalfPI * 2, 0, 0);
+            constTheta_scene.position.set(0, coneHeight / 2, 0);
+
+            // scene.add(constTheta_scene);
+
+
+        }
+
+        // Function to create scene of constant-Phi plane
+        function constPhi_create() {
+            var PlaneWidth = 1 * vR_factor;
+            var PlaneHeight = PlaneWidth * 2;
+            var WidthSeg = 32;
+            var HeightSeg = WidthSeg;
+            var constPhi_plane = new THREE.PlaneGeometry(PlaneWidth, PlaneHeight, WidthSeg, HeightSeg);
+            var constPhi_material = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide, color: 0x00ccff });
+
+            constPhi_scene = new THREE.Mesh(constPhi_plane, constPhi_material);
+
+            constPhi_scene.rotation.y += myHalfPI;
+            constPhi_scene.rotation.y += vPhi;
+            constPhi_scene.position.set(PlaneWidth * 0.5 * Math.sin(vPhi), 0, PlaneWidth * 0.5 * Math.cos(vPhi));
+
+        };
+
+        // Function to create scene of unit vector-Phi  
+        function unit_R_create() {
+            var dir = new THREE.Vector3(Math.sin(vTheta) * Math.sin(vPhi), Math.cos(vTheta), Math.sin(vTheta) * Math.cos(vPhi));
+            var origin = new THREE.Vector3(vPtVector3.x, vPtVector3.y, vPtVector3.z);
+            var length = 40;
+            var hex = 0xffffff;
+            unit_R_vector = new THREE.ArrowHelper(dir, origin, length, hex, 12, 8);
+
+        }
+
+        // Function to create scene of unit vector-Theta  
+        function unit_Theta_create() {
+            var dir = new THREE.Vector3(Math.sin(vPhi) * Math.cos(vTheta), -Math.sin(vTheta), Math.cos(vPhi) * Math.cos(vTheta));
+            var origin = new THREE.Vector3(vPtVector3.x, vPtVector3.y, vPtVector3.z);
+            var length = 40;
+            var hex = 0xffffff;
+            unit_Theta_vector = new THREE.ArrowHelper(dir, origin, length, hex, 12, 8);
+        }
+
+        // Function to create scene of unit vector-Phi  
+        function unit_Phi_create() {
+            var dir = new THREE.Vector3(Math.cos(vPhi), 0, -Math.sin(vPhi));
+            var origin = new THREE.Vector3(vPtVector3.x, vPtVector3.y, vPtVector3.z);
+            var length = 40;
+            var hex = 0xffffff;
+            unit_phi_vector = new THREE.ArrowHelper(dir, origin, length, hex, 12, 8);
+
+        }
+
+        // Initialization of webpage
+        var container;
+        function webGLStart() {
+            var canvas = document.getElementById("WebGLCanvas");
+
+            var separation = 100, amountX = 50, amountY = 50;
+
+            container = document.createElement('div');
+            canvas.appendChild(container);
+
+
+            // console.log(canvas);
+            scene = new THREE.Scene();
+            // camera = new THREE.OrthographicCamera( -200, 200, 125, -100 );
+            camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 3000);
+
+
+
+            controls = new THREE.OrbitControls(camera, canvas)
+
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(800, 500);
+            // var w,h;
+            // w = document.getElementsByClassName("col-lg-8")[0].offsetWidth;
+            // h= document.getElementsByClassName("col-lg-8")[0].offsetHeight;
+            // if(h<500){
+            //     h=500;
+            // }
+            // renderer.setSize(w,h);
+
+            renderer.domElement.id = "mycanvas";
+            container.appendChild(renderer.domElement);
+
+
+
+
+            var material = new THREE.SpriteCanvasMaterial
+                ({
+                    color: 0xffffff,
+                    program: function (context) {
+                        context.beginPath();
+                        context.arc(0, 0, 0.5, 0, PI2, true);
+                        context.fill();
+                    }
+                });
+
+            // set x axis
+            var dir = new THREE.Vector3(0, 0, 1);
+            var origin = new THREE.Vector3(0, 0, -100);
+            var length = 240;
+            var hex = 0xff0000;
+            var GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
+
+            //set y axis
+            dir = new THREE.Vector3(1, 0, 0);
+            origin = new THREE.Vector3(-100, 0, 0);
+            length = 240;
+            hex = 0x00ff00;
+            GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
+
+            //set z axis
+            dir = new THREE.Vector3(0, 1, 0);
+            origin = new THREE.Vector3(0, -100, 0);
+            length = 240;
+            hex = 0x7777ff;
+            GridLine = new THREE.ArrowHelper(dir, origin, length, hex, 10, 5);
+            scene.add(GridLine);
+
+            // Light source
+
+
+            var light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(500, 50, 5);
+            light.target.position.set(0, 0, 0);
+            scene.add(light);
+
+
+
+            var light = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(light);
+
+            var light = new THREE.DirectionalLight(0xffffff, 0.5);
+            light.position.set(-800, 0, 0);
+            light.target.position.set(0, 0, 0);
+            scene.add(light);
+            ////////////////////////////////////////////////////////////////
+
+            // Set the coordinates of observation point
+            UpdatePoint();
+
+            // ///FONT /////////////////////////////
+
+            // var loader = new THREE.FontLoader();
+
+            var myFont = new THREE.Font(jsonTxt);
+            var xGeometry = new THREE.TextGeometry("x", {
+                font: myFont,
+                size: 10,
+                height: 1
+            });
+            var yGeometry = new THREE.TextGeometry("y", {
+                font: myFont,
+                size: 10,
+                height: 1
+            });
+            var zGeometry = new THREE.TextGeometry("z", {
+                font: myFont,
+                size: 10,
+                height: 1
+            });
+
+            var xMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            var yMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            var zMaterial = new THREE.MeshBasicMaterial({ color: 0x7777ff });
+
+            var xScene = new THREE.Mesh(xGeometry, xMaterial);
+            var yScene = new THREE.Mesh(yGeometry, yMaterial);
+            var zScene = new THREE.Mesh(zGeometry, zMaterial);
+
+            xScene.position.set(0, -5, 150);
+            xScene.rotation.set(0, Math.PI / 2, 0)
+            scene.add(xScene);
+
+            yScene.position.set(150, -5, 0);
+            scene.add(yScene);
+
+            zScene.position.set(-5, 150, 0);
+            scene.add(zScene);
+
+
+            //////////////////////////////////
+
+            // Create the scene of observation point
+            var obvPoint_sphere_radius = 5;
+            var obvPoint_sphere = new THREE.SphereGeometry(obvPoint_sphere_radius, 16, 16);
+            var obvPoint_material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            obvPoint_scene = new THREE.Mesh(obvPoint_sphere, obvPoint_material);
+            obvPoint_scene.position.set(vPtVector3.x, vPtVector3.y, vPtVector3.z);
+            scene.add(obvPoint_scene);
+
+            // Create the scene of const-R sphere
+            // But, do not show it initially.
+            constR_create();
+
+            // Create the scene of const-Theta cone
+            // But, do not show it initially.
+            constTheta_create();
+
+            // Create the scene of const-Phi plane
+            // But, do not show it initially.
+            constPhi_create();
+
+
+            // Create the scene of unit vector-R
+            // But, do not show it initially.
+            unit_R_create();
+
+            // Create the scene of unit vector-Theta
+            // But, do not show it initially.
+            unit_Theta_create();
+            // Create the scene of unit vector-phi
+            // But, do not show it initially.
+            unit_Phi_create();
+
+            //設定一開始畫面的視角
+            camera.position.x = 1000;
+            camera.position.y = -1000;
+            camera.position.z = 1000;
+
+            camera.position.set(500, 200, 500);
+            camera.rotation.set(0, 0, 0);
+            camera.lookAt(scene.position);
+
+            show_Cartesian();
+            show_Cylindrical();
+            show_Spherical();
+
+            animate();
+        };
+
+        function animate() {
+            // console.log("animation");
+            requestAnimationFrame(animate);
+            controls.update()
+            render();
+        };
+
+        function updateControls() {
+            controls.update();
+        };
+
+        // Update the plot
+        function render() {
+
+            // Update the observation point
+            obvPoint_scene.position.set(vPtVector3.x, vPtVector3.y, vPtVector3.z);
+
+            // if(document.getElementById("trace_box").checked==true){
+            //     console.log("chekced");
+            // }
+
+            // If checkbox of constant R is checked,
+            // remove the old scene of constant R,
+            // Create a new one, and add it into the scene.
+            if (document.getElementById("fixed_R").checked) {
+
+                scene.remove(constR_scene);
+                constR_create();
+                scene.add(constR_scene);
+            }
+
+
+
+            // If checkbox of constant Theta is checked,
+            // remove the old scene of constant Theta,
+            // Create a new one, and add it into the scene.
+            if (document.getElementById("fixed_Theta").checked) {
+                scene.remove(constTheta_scene);
+                constTheta_create();
+                scene.add(constTheta_scene);
+            }
+
+            // If checkbox of constant Phi is checked,
+            // remove the old scene of constant Phi,
+            // Create a new one, and add it into the scene.
+            if (document.getElementById("fixed_Phi").checked) {
+                scene.remove(constPhi_scene);
+                constPhi_create();
+                scene.add(constPhi_scene);
+            }
+
+            if (document.getElementById("aR").checked) {
+                scene.remove(unit_R_vector);
+                unit_R_create();
+                scene.add(unit_R_vector);
+            }
+
+            if (document.getElementById("aTheta").checked) {
+                scene.remove(unit_Theta_vector);
+                unit_Theta_create();
+                scene.add(unit_Theta_vector);
+            }
+
+            if (document.getElementById("aPhi").checked) {
+                scene.remove(unit_phi_vector);
+                unit_Phi_create();
+                scene.add(unit_phi_vector);
+            }
+
+            if (volumeSphereShow) {
+                scene.remove(volumeSphere);
+                volumeSphereShow = false;
+                drawVolumeSpherical();
+                scene.add(volumeSphere);
+            }
+
+            if (volumeCylinderShow) {
+                scene.remove(volumeCylinder);
+                volumeCylinderShow = false;
+                drawVolumeCylinder();
+                scene.add(volumeCylinder);
+            }
+
+
+            renderer.render(scene, camera);
+        };
+
+        function fullScreenMode() {
+            var x = document.getElementsByName("screenMode");
+            x[0].style.display = "none";
+            x[1].style.display = "none";
+
+            renderer.setSize(window.outerWidth, window.outerHeight);
+        }
+        document.onkeydown = function (evt) {
+            evt = evt || window.event;
+            if (evt.keyCode == 27) {
+                var x = document.getElementsByName("screenMode");
+                x[0].style.display = "";
+                x[1].style.display = "";
+
+                renderer.setSize(800, 500);
+            }
+        }
+
+        var trace_x;
+        var trace_y;
+        var trace_z;
+
+        function setObvPointTrace() {
+            if (document.getElementById("trace_box").checked == true) {
+                observationPointTrace = new THREE.Group();
+                console.log("checked");
+                trace_x = obvPoint_scene.position.x;
+                trace_y = obvPoint_scene.position.y;
+                trace_z = obvPoint_scene.position.z;
+            }
+            else {
+                scene.remove(observationPointTrace);
+            }
+        }
+
+
+        function AutoRotationMode() {
+
+            controls.autoRotate = true;
+            camera.lookAt(constR_scene)
+        }
+
+        function StopRotationMode() {
+            controls.autoRotate = false;
+        }
+
+        // function show_trace(){
+        //     if(document.getElementById("trace_box").checked==true){
+        //         var z = vRho*Math.cos(vPhi); 
+        //         var x = vRho*Math.sin(vPhi); 
+        //         var y = vR*Math.cos(vTheta); 
+
+        //         if(Math.abs(trace_x-x)>=10 || Math.abs(trace_y-y)>=10 || Math.abs(trace_z-z)>=10){
+        //             obj = obvPoint_scene.clone();
+        //             scene.remove(observationPointTrace);
+        //             observationPointTrace.add(obj);
+        //             scene.add(observationPointTrace);
+
+        //             trace_x = x;
+        //             trace_y = y;
+        //             trace_z = z;
+
+        //         }
+        //     }
+        //     // console.log(value);
+        // }
+
+
+
+    </script>
+
+
+    <style type="text/css">
+        .MathJax_Hover_Frame {
+            border-radius: .25em;
+            -webkit-border-radius: .25em;
+            -moz-border-radius: .25em;
+            -khtml-border-radius: .25em;
+            box-shadow: 0px 0px 15px #83A;
+            -webkit-box-shadow: 0px 0px 15px #83A;
+            -moz-box-shadow: 0px 0px 15px #83A;
+            -khtml-box-shadow: 0px 0px 15px #83A;
+            border: 1px solid #A6D ! important;
+            display: inline-block;
+            position: absolute
+        }
+
+        .MathJax_Hover_Arrow {
+            position: absolute;
+            width: 15px;
+            height: 11px;
+            cursor: pointer
+        }
+    </style>
+
+    <style type="text/css">
+        #MathJax_About {
+            position: fixed;
+            left: 50%;
+            width: auto;
+            text-align: center;
+            border: 3px outset;
+            padding: 1em 2em;
+            background-color: #DDDDDD;
+            color: black;
+            cursor: default;
+            font-family: message-box;
+            font-size: 120%;
+            font-style: normal;
+            text-indent: 0;
+            text-transform: none;
+            line-height: normal;
+            letter-spacing: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            float: none;
+            z-index: 201;
+            border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            -khtml-border-radius: 15px;
+            box-shadow: 0px 10px 20px #808080;
+            -webkit-box-shadow: 0px 10px 20px #808080;
+            -moz-box-shadow: 0px 10px 20px #808080;
+            -khtml-box-shadow: 0px 10px 20px #808080;
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+        }
+
+        .MathJax_Menu {
+            position: absolute;
+            background-color: white;
+            color: black;
+            width: auto;
+            padding: 2px;
+            border: 1px solid #CCCCCC;
+            margin: 0;
+            cursor: default;
+            font: menu;
+            text-align: left;
+            text-indent: 0;
+            text-transform: none;
+            line-height: normal;
+            letter-spacing: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            float: none;
+            z-index: 201;
+            box-shadow: 0px 10px 20px #808080;
+            -webkit-box-shadow: 0px 10px 20px #808080;
+            -moz-box-shadow: 0px 10px 20px #808080;
+            -khtml-box-shadow: 0px 10px 20px #808080;
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+        }
+
+        .MathJax_MenuItem {
+            padding: 2px 2em;
+            background: transparent
+        }
+
+        .MathJax_MenuTitle {
+            background-color: #CCCCCC;
+            margin: -1px -1px 1px -1px;
+            text-align: center;
+            font-style: italic;
+            font-size: 80%;
+            color: #444444;
+            padding: 2px 0;
+            overflow: hidden
+        }
+
+        .MathJax_MenuArrow {
+            position: absolute;
+            right: .5em;
+            color: #666666
+        }
+
+        .MathJax_MenuActive .MathJax_MenuArrow {
+            color: white
+        }
+
+        .MathJax_MenuCheck {
+            position: absolute;
+            left: .7em
+        }
+
+        .MathJax_MenuRadioCheck {
+            position: absolute;
+            left: 1em
+        }
+
+        .MathJax_MenuLabel {
+            padding: 2px 2em 4px 1.33em;
+            font-style: italic
+        }
+
+        .MathJax_MenuRule {
+            border-top: 1px solid #CCCCCC;
+            margin: 4px 1px 0px
+        }
+
+        .MathJax_MenuDisabled {
+            color: GrayText
+        }
+
+        .MathJax_MenuActive {
+            background-color: Highlight;
+            color: HighlightText
+        }
+
+        .MathJax_Menu_Close {
+            position: absolute;
+            width: 31px;
+            height: 31px;
+            top: -15px;
+            left: -15px
+        }
+    </style>
+
+    <style type="text/css">
+        #MathJax_Zoom {
+            position: absolute;
+            background-color: #F0F0F0;
+            overflow: auto;
+            display: block;
+            z-index: 301;
+            padding: .5em;
+            border: 1px solid black;
+            margin: 0;
+            font-weight: normal;
+            font-style: normal;
+            text-align: left;
+            text-indent: 0;
+            text-transform: none;
+            line-height: normal;
+            letter-spacing: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            float: none;
+            box-shadow: 5px 5px 15px #AAAAAA;
+            -webkit-box-shadow: 5px 5px 15px #AAAAAA;
+            -moz-box-shadow: 5px 5px 15px #AAAAAA;
+            -khtml-box-shadow: 5px 5px 15px #AAAAAA;
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+        }
+
+        #MathJax_ZoomOverlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 300;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            background-color: white;
+            opacity: 0;
+            filter: alpha(opacity=0)
+        }
+
+        #MathJax_ZoomEventTrap {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 302;
+            display: inline-block;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            background-color: white;
+            opacity: 0;
+            filter: alpha(opacity=0)
+        }
+    </style>
+
+    <style type="text/css">
+        .MathJax_Preview {
+            color: #888
+        }
+
+        #MathJax_Message {
+            position: fixed;
+            left: 1em;
+            bottom: 1.5em;
+            background-color: #E6E6E6;
+            border: 1px solid #959595;
+            margin: 0px;
+            padding: 2px 8px;
+            z-index: 102;
+            color: black;
+            font-size: 80%;
+            width: auto;
+            white-space: nowrap
+        }
+
+        #MathJax_MSIE_Frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0px;
+            z-index: 101;
+            border: 0px;
+            margin: 0px;
+            padding: 0px
+        }
+
+        .MathJax_Error {
+            color: #CC0000;
+            font-style: italic
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-top">
+        <div class="row">
+            <div class="col1">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td id="WebGLCanvas"
+                                style="border: none;margin-left:10px;margin-top:5px;margin-bottom:5px; text-align:top;"
+                                width="878" height="500">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div name="screenMode" class="col2">
+                <input type="checkbox" id="aObservationPoint" onchange="observationPointCheck()"
+                    style="text-align:center;margin-top:10px" checked="checked"><i>Observation Point</i>
+                <!-- ===============================================11111111111=========================================================== -->
+                <div class="row addMarginBlock">
+                    <div class="col-lg-4">
+                        <div id="vimlsli_R" class="cBoxSlider"></div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="fixed_R" onchange="ConstR_check()"> Show Surface
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="aR" onchange="Unit_vector_R_check()" style="text-align:center;">
+                            Show <b>a</b><sub><i>R</i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ================================================222222222222====================================================================== -->
+                <div class="row addMarginBlock">
+                    <div class="col-lg-4">
+                        <div id="vimlsli_Theta" class="cBoxSlider"></div>
+                    </div>
+
+                    <input type="checkbox" id="rad1" onchange="changeUnits()">Degree
+
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="fixed_Theta" onchange="ConstTheta_check()"> Show Surface
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="aTheta" onchange="Unit_vector_Theta_check()"
+                                style="text-align:center;">Show <b>a</b><sub><i>&theta;</i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ===================================================33333333333======================================================================== -->
+                <div class="row addMarginBlock">
+                    <div class="col-lg-4">
+                        <div id="vimlsli_Phi" class="cBoxSlider"></div>
+                    </div>
+
+                    <input type="checkbox" id="rad2" onchange="changeUnits()">Degree
+
+
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="fixed_Phi" onchange="ConstPhi_check()"> Show Surface
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="whiteBg">
+                            <input type="checkbox" id="aPhi" onchange="Unit_vector_phi_check()"
+                                style="text-align:center;"> Show <b>a</b><sub><i>&phi;</i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ===================================================444444444444======================================================================== -->
+                <div class="addMarginBlock" id="addBorder">
+                    <div class="addMargintext">Cartesian Coordinates (<i>x</i>, <i>y</i>, <i>z</i>) = <input type="text"
+                            id="coordinate_1" size=15 readonly> (m, m, m)</div>
+                    <div class="addMargintext" style="display: none;">Cylindrical Coordinates (<i>&rho;</i>, <i>&phi;</i>, <i>z</i>) = <input
+                            type="text" id="coordinate_2" size=15 readonly> (m, deg, m)</div>
+                    <div class="addMargintext">Spherical Coordinates (<i>r</i>, <i>&theta;</i>, <i>&phi;</i>) = <input
+                            type="text" id="coordinate_3" size=15 readonly> (m, deg, deg)</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row" name="screenMode">
+        <div class="col-lg-2">
+            <!-- <div class="trace-box">
+                <input type="checkbox" id="trace_box" onchange="setObvPointTrace()"> Trace Mode
+            </div> -->
+            <input type="submit" onclick="fullScreenMode()" class="cons-input-mode" value="Full Screen Mode">
+            <input type="submit" onclick="AutoRotationMode()" class="cons-input-mode" value="Auto Roation">
+            <input type="submit" onclick="StopRotationMode()" class="cons-input-mode" value="Stop Rotation">
+
+
+        </div>
+
+
+        <script type="text/javascript">
+
+            /*------------------------3D PLOT------------------------------*/
+
+            // Main part
+            // Create observation point
+            var vObvPoint;
+            var observationPointTrace;
+
+            // Range slider setting for spherical coordinate R
+            var P1_vimlslider_R = new VIML_Slider();
+            P1_vimlslider_R.defSliderWidth = 350;
+            P1_vimlslider_R.createUI('vimlsli_R', "<i>R </i> = ", " m", 3, [0, 1, 0.05], remainingWidth);
+            P1_vimlslider_R.disableMax();
+            P1_vimlslider_R.disableMin();
+            P1_vimlslider_R.setRange(0, 1);
+            SetUIValue_vR(1);
+            P1_vimlslider_R.setTick([[0, "0"], [0.25, "0.25"], [0.5, "0.5"], [0.75, "0.75"], [1, "1"]]);
+
+            P1_vimlslider_R.onChange = function (vValue) {
+
+
+                SetUIValue_vR(vValue);
+                // show_trace();     
+                UpdatePoint();
+                show_Cartesian();
+                show_Spherical();
+
+
+            };
+
+            // Range slider setting for spherical coordinate Theta
+            var P1_vimlslider_Theta = new VIML_Slider();
+            P1_vimlslider_Theta.defSliderWidth = 350;
+            P1_vimlslider_Theta.createUI('vimlsli_Theta', "<i>&theta;</i> = ", " rad", 4, [0, Math.PI, Math.PI / 36], remainingWidth);
+            P1_vimlslider_Theta.disableMax();
+            P1_vimlslider_Theta.disableMin();
+            P1_vimlslider_Theta.setRange(-Math.PI, Math.PI);
+            SetUIValue_vTheta(Math.PI / 3);
+            P1_vimlslider_Theta.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);
+            P1_vimlslider_Theta.onChange = function (vValue) {
+
+                SetUIValue_vTheta(vValue);
+                // show_trace();
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+
+            };
+
+
+            // Range slider setting for spherical coordinate Phi
+            var P1_vimlslider_Phi = new VIML_Slider();
+            P1_vimlslider_Phi.defSliderWidth = 350;
+            // P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [-Math.PI, Math.PI, Math.PI/36]);       //initial
+            P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [0, (2 * Math.PI), Math.PI / 36], remainingWidth);
+            P1_vimlslider_Phi.disableMax();
+            P1_vimlslider_Phi.disableMin();
+            // P1_vimlslider_Phi.setRange(-Math.PI,  Math.PI);   //initial
+            P1_vimlslider_Phi.setRange(0, 2 * Math.PI);
+            SetUIValue_vPhi(Math.PI / 6);
+            // P1_vimlslider_Phi.setTick([[-Math.PI, "-π"], [-Math.PI / 2, "-π/2"], [0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);      //initial
+            P1_vimlslider_Phi.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"], [3 * Math.PI / 2, "3π/2"], [2 * Math.PI, "2π"]]);
+            P1_vimlslider_Phi.onChange = function (vValue) {
+
+
+                SetUIValue_vPhi(vValue);
+                // show_trace();
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+
+            };
+
+
+
+
+
+        </script>
+
+</body>
+
+</html>
